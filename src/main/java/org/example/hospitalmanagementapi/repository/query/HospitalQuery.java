@@ -3,23 +3,29 @@ package org.example.hospitalmanagementapi.repository.query;
 public class HospitalQuery {
 
     public static final String INSERT_HOSPITAL = """
-                INSERT INTO Hospital (hospitalName, hospitalAddress, hospitalContactNo, hospitalStatus, hospitalCreatedAt, hospitalUpdatedAt)
-                VALUES (:hospitalName, :hospitalAddress, :hospitalContactNo, :hospitalStatus, GETDATE(), GETDATE())
+                INSERT INTO Hospital (
+                    hospitalName, hospitalAddress, hospitalContactNo, hospitalEmail,
+                    hospitalStatus, hospitalCreatedAt, hospitalUpdatedAt
+                )
+                VALUES (
+                    :hospitalName, :hospitalAddress, :hospitalContactNo, :hospitalEmail,
+                    'ACTIVE', GETDATE(), GETDATE()
+                )
             """;
 
-    public static final String GET_ALL = """
+    public static final String GET_HOSPITAL_BY_ID = """
                 SELECT * FROM Hospital
-            """;
-
-    public static final String GET_BY_ID = """
-                SELECT * FROM Hospital WHERE hospitalId = :hospitalId
+                WHERE hospitalId = :hospitalId AND hospitalStatus = 'ACTIVE'
             """;
 
     public static final String UPDATE_HOSPITAL_BY_ID = """
                 UPDATE Hospital
-                SET hospitalName = :hospitalName, hospitalAddress = :hospitalAddress, 
-                    hospitalContactNo = :hospitalContactNo, 
-                    hospitalStatus = 'UPDATED', hospitalUpdatedAt = GETDATE()
+                SET hospitalName = :hospitalName,
+                    hospitalAddress = :hospitalAddress,
+                    hospitalContactNo = :hospitalContactNo,
+                    hospitalEmail = :hospitalEmail,
+                    hospitalStatus = :hospitalStatus,
+                    hospitalUpdatedAt = GETDATE()
                 WHERE hospitalId = :hospitalId
             """;
 
@@ -29,6 +35,4 @@ public class HospitalQuery {
                     hospitalUpdatedAt = GETDATE()
                 WHERE hospitalId = :hospitalId
             """;
-
 }
-

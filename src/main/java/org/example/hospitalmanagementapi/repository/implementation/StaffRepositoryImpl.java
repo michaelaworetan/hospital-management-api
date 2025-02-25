@@ -2,6 +2,8 @@ package org.example.hospitalmanagementapi.repository.implementation;
 
 import org.example.hospitalmanagementapi.mapper.StaffRowMapper;
 import org.example.hospitalmanagementapi.model.entity.Staff;
+import org.example.hospitalmanagementapi.model.request.StaffCreateRequest;
+import org.example.hospitalmanagementapi.model.request.StaffUpdateRequest;
 import org.example.hospitalmanagementapi.repository.Interface.StaffRepository;
 import org.example.hospitalmanagementapi.repository.query.StaffQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,25 +38,26 @@ public class StaffRepositoryImpl implements StaffRepository {
     }
 
     @Override
-    public int createStaff(Staff staff) {
+    public int createStaff(StaffCreateRequest staffRequest) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("staffHospitalId", staff.getStaffHospitalId())
-                .addValue("staffPosition", staff.getStaffPosition())
-                .addValue("staffDepartment", staff.getStaffDepartment())
-                .addValue("staffSalary", staff.getStaffSalary());
-
+                .addValue("staffName", staffRequest.getStaffName())
+                .addValue("staffHospitalId", staffRequest.getStaffHospitalId())
+                .addValue("staffPosition", staffRequest.getStaffPosition())
+                .addValue("staffDepartment", staffRequest.getStaffDepartment())
+                .addValue("staffSalary", staffRequest.getStaffSalary());
         return jdbcTemplate.update(StaffQuery.INSERT_STAFF, params);
     }
 
     @Override
-    public int updateStaff(int staffId, int hospitalId, Staff staff) {
+    public int updateStaff(int staffId, int hospitalId, StaffUpdateRequest staffRequest) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("staffId", staffId)
                 .addValue("staffHospitalId", hospitalId)
-                .addValue("staffPosition", staff.getStaffPosition())
-                .addValue("staffDepartment", staff.getStaffDepartment())
-                .addValue("staffSalary", staff.getStaffSalary());
-
+                .addValue("staffName", staffRequest.getStaffName())
+                .addValue("staffPosition", staffRequest.getStaffPosition())
+                .addValue("staffDepartment", staffRequest.getStaffDepartment())
+                .addValue("staffSalary", staffRequest.getStaffSalary())
+                .addValue("staffStatus", staffRequest.getStaffStatus());
         return jdbcTemplate.update(StaffQuery.UPDATE_STAFF_BY_ID, params);
     }
 
@@ -63,7 +66,6 @@ public class StaffRepositoryImpl implements StaffRepository {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("staffId", staffId)
                 .addValue("staffHospitalId", hospitalId);
-
         return jdbcTemplate.update(StaffQuery.DELETE_STAFF_BY_ID, params);
     }
 }

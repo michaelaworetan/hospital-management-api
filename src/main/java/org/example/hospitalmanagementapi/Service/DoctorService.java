@@ -3,91 +3,63 @@ package org.example.hospitalmanagementapi.Service;
 import com.google.gson.Gson;
 import org.example.hospitalmanagementapi.model.entity.Doctor;
 import org.example.hospitalmanagementapi.model.request.DoctorCreateRequest;
-import org.example.hospitalmanagementapi.model.response.DoctorCreateResponse;
-import org.example.hospitalmanagementapi.model.response.DoctorGetByIdResponse;
+import org.example.hospitalmanagementapi.model.request.DoctorUpdateRequest;
 import org.example.hospitalmanagementapi.repository.Interface.DoctorRepository;
+import org.example.hospitalmanagementapi.repository.Interface.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorService {
-
     private final DoctorRepository doctorRepository;
+    private final HospitalRepository hospitalRepository;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(DoctorRepository doctorRepository, HospitalRepository hospitalRepository) {
         this.doctorRepository = doctorRepository;
+        this.hospitalRepository = hospitalRepository;
     }
 
-
-    // Get a specific doctor by ID
-    public DoctorGetByIdResponse getDoctorById(int doctorId, int doctorStaffId) {
-        Doctor existingDoctor = doctorRepository.getDoctorById(doctorId, doctorStaffId);
-
-        if (existingDoctor != null) {
-            return DoctorGetByIdResponse.builder()
-                    .doctorId(existingDoctor.getDoctorId())
-                    .doctorStaffId(existingDoctor.getDoctorStaffId())
-                    .doctorName(existingDoctor.getDoctorName())
-                    .doctorSpeciality(existingDoctor.getDoctorSpeciality())
-                    .doctorLicenseNumber(existingDoctor.getDoctorLicenseNumber())
-                    .doctorYearsExperience(existingDoctor.getDoctorYearsExperience())
-                    .doctorStatus(existingDoctor.getDoctorStatus())
-                    .doctorCreatedAt(existingDoctor.getDoctorCreatedAt())
-                    .doctorUpdatedAt(existingDoctor.getDoctorUpdatedAt())
-                    .build();
-        }
-        return null;
+    public List<Doctor> getDoctorsByHospitalId(int hospitalId) {
+        return doctorRepository.getDoctorsByHospitalId(hospitalId);
     }
 
-    // Create a new doctor
-    public DoctorCreateResponse createDoctor(DoctorCreateRequest request) {
+    public Doctor getDoctorById(int doctorId, int hospitalId) {
+        return doctorRepository.getDoctorById(doctorId, hospitalId);
+    }
+
+    public int createDoctor(DoctorCreateRequest request) {
         Gson gson = new Gson();
 
-        // Convert CreateRequest DTO to Doctor entity
+        // Validate that the hospital exists before creating doctor
+        var hospital = hospitalRepository.getHospitalById(request.getDoctorStaffId());
+        if (hospital == null) {
+            return -1;
+        }
+
+        var doctor = gson.fromJson(gson.toJson(request), Doctor.class);
+        return doctorRepository.createDoctor(doctor);
+    }
+
+    public int updateDoctor(int doctorId, int hospitalId, DoctorUpdateRequest request) {
+        Gson gson = new Gson();
+
+        // Validate that the hospital exists before updating doctor
+        var hospital = hospitalRepository.getHospitalById(hospitalId);
+        if (hospital == null) {
+            return -1;
+        }
+
         var doctor = gson.fromJson(gson.toJson(request), Doctor.class);
 
-        // Insert the doctor and get the generated ID
-        int doctorId = doctorRepository.createDoctor(doctor);
+        doctor.setDoctorId(doctorId);
 
-        if (doctorId < 1) {
-            return null; // Return null if creation failed
-        }
-
-        // Convert back to response DTO
-        return DoctorCreateResponse.builder()
-                .doctorId(doctorId)
-                .doctorStaffId(doctor.getDoctorStaffId())
-                .doctorName(doctor.getDoctorName())
-                .doctorSpeciality(doctor.getDoctorSpeciality())
-                .doctorLicenseNumber(doctor.getDoctorLicenseNumber())
-                .doctorYearsExperience(doctor.getDoctorYearsExperience())
-                .doctorStatus(doctor.getDoctorStatus())
-                .doctorCreatedAt(doctor.getDoctorCreatedAt()) // Using the same approach as StaffService
-                .build();
+        return doctorRepository.updateDoctor(doctor, hospitalId);
     }
 
-    // Update doctor details
-    public int updateDoctor(int doctorId, int doctorStaffId, DoctorCreateRequest request) {
-        Doctor existingDoctor = doctorRepository.getDoctorById(doctorId, doctorStaffId);
-
-        if (existingDoctor != null) {
-            // Map the update request fields to the existing doctor entity
-            existingDoctor.setDoctorName(request.getDoctorName());
-            existingDoctor.setDoctorSpeciality(request.getDoctorSpeciality());
-            existingDoctor.setDoctorLicenseNumber(request.getDoctorLicenseNumber());
-            existingDoctor.setDoctorYearsExperience(request.getDoctorYearsExperience());
-            existingDoctor.setDoctorStatus(request.getDoctorStatus());
-            existingDoctor.setDoctorUpdatedAt("GETDATE()"); // Matches StaffService
-
-            // Perform the update operation
-            return doctorRepository.updateDoctor(doctorId, doctorStaffId, existingDoctor);
-        }
-        return 0; // Returns 0 if doctor is not found
-    }
-
-    // Delete a doctor by ID
-    public int deleteDoctorById(int doctorId, int doctorStaffId) {
-        return doctorRepository.deleteDoctorById(doctorId, doctorStaffId);
+    public int deleteDoctorById(int doctorId, int hospitalId) {
+        return doctorRepository.deleteDoctorById(doctorId, hospitalId);
     }
 }

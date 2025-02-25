@@ -1,12 +1,12 @@
 package org.example.hospitalmanagementapi.controller;
 
 import org.example.hospitalmanagementapi.Service.StaffService;
+import org.example.hospitalmanagementapi.model.entity.Staff;
 import org.example.hospitalmanagementapi.model.request.StaffCreateRequest;
-import org.example.hospitalmanagementapi.model.response.StaffCreateResponse;
-import org.example.hospitalmanagementapi.model.response.StaffGetByIdResponse;
+import org.example.hospitalmanagementapi.model.request.StaffUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/staff")
 public class StaffController {
-
     private final StaffService staffService;
 
     @Autowired
@@ -22,65 +21,51 @@ public class StaffController {
         this.staffService = staffService;
     }
 
-    // Endpoint to create a staff member
-    @PostMapping("/create")
-    public ResponseEntity<StaffCreateResponse> createStaff(
+    @PostMapping("/create-staff")
+    public ResponseEntity<String> createStaff(
             @RequestBody StaffCreateRequest request
     ) {
-        StaffCreateResponse response = staffService.createStaff(request);
-        if (response == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        return ResponseEntity.ok(response);
+        var resp = staffService.createStaff(request);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff creation failed");
+        return ResponseEntity.ok("Staff created successfully");
     }
 
-    // Endpoint to get all staff members for a specific hospital
-    @GetMapping("/hospital/{hospitalId}")
-    public ResponseEntity<List<StaffGetByIdResponse>> getStaffByHospitalId(
+    @GetMapping("/get-by-hospital/{hospitalId}")
+    public ResponseEntity<List<Staff>> getStaffByHospitalId(
             @PathVariable int hospitalId
     ) {
         return ResponseEntity.ok(staffService.getStaffByHospitalId(hospitalId));
     }
 
-    // Endpoint to get a specific staff member by ID
-    @GetMapping("/{staffId}/hospital/{hospitalId}")
-    public ResponseEntity<StaffGetByIdResponse> getStaffById(
-            @PathVariable int staffId,
-            @PathVariable int hospitalId
+    @GetMapping("/get-by-id/{staffId}/hospital/{hospitalId}")
+    public ResponseEntity<?> getStaffById(
+            @PathVariable int staffId, @PathVariable int hospitalId
     ) {
-        StaffGetByIdResponse staff = staffService.getStaffById(staffId, hospitalId);
-        if (staff == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return ResponseEntity.ok(staff);
+        var resp = staffService.getStaffById(staffId, hospitalId);
+        if (resp == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found");
+        return ResponseEntity.ok(resp);
     }
 
-    // Endpoint to update staff details
-    @PutMapping("/update/{staffId}/hospital/{hospitalId}")
+    @PutMapping("/update-staff/{staffId}/hospital/{hospitalId}")
     public ResponseEntity<String> updateStaff(
-            @PathVariable int staffId,
-            @PathVariable int hospitalId,
-            @RequestBody StaffCreateRequest request
+            @PathVariable int staffId, @PathVariable int hospitalId,
+            @RequestBody StaffUpdateRequest request
     ) {
-        int resp = staffService.updateStaff(staffId, hospitalId, request);
-        if (resp < 1) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff not found or update failed");
-        }
+        var resp = staffService.updateStaff(staffId, hospitalId, request);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff update failed");
         return ResponseEntity.ok("Staff updated successfully");
     }
 
-    // Endpoint to delete (soft delete) a staff member by ID
-    @DeleteMapping("/{staffId}/hospital/{hospitalId}")
-    public ResponseEntity<String> deleteStaff(
-            @PathVariable int staffId,
-            @PathVariable int hospitalId
+    @DeleteMapping("/delete-by-id/{staffId}/hospital/{hospitalId}")
+    public ResponseEntity<String> deleteStaffById(
+            @PathVariable int staffId, @PathVariable int hospitalId
     ) {
-        int updatedRows = staffService.deleteStaffById(staffId, hospitalId);
-
-        if (updatedRows < 1) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff not found or deletion failed");
-        }
-
-        return ResponseEntity.ok("Staff member removed successfully");
+        var resp = staffService.deleteStaffById(staffId, hospitalId);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff deletion failed");
+        return ResponseEntity.ok("Staff deleted successfully");
     }
 }

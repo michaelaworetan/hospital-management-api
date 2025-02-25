@@ -8,7 +8,6 @@ import lombok.Data;
 public class Doctor {
     private int doctorId;
     private int doctorStaffId;
-    private String doctorName;
     private String doctorSpeciality;
     private String doctorLicenseNumber;
     private int doctorYearsExperience;

@@ -1,12 +1,12 @@
 package org.example.hospitalmanagementapi.controller;
 
 import org.example.hospitalmanagementapi.Service.DoctorService;
+import org.example.hospitalmanagementapi.model.entity.Doctor;
 import org.example.hospitalmanagementapi.model.request.DoctorCreateRequest;
-import org.example.hospitalmanagementapi.model.response.DoctorCreateResponse;
-import org.example.hospitalmanagementapi.model.response.DoctorGetByIdResponse;
+import org.example.hospitalmanagementapi.model.request.DoctorUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/doctor")
 public class DoctorController {
-
     private final DoctorService doctorService;
 
     @Autowired
@@ -22,58 +21,51 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    // Endpoint to create a doctor
-    @PostMapping("/create")
-    public ResponseEntity<DoctorCreateResponse> createDoctor(
+    @PostMapping("/create-doctor")
+    public ResponseEntity<String> createDoctor(
             @RequestBody DoctorCreateRequest request
     ) {
-        DoctorCreateResponse response = doctorService.createDoctor(request);
-        if (response == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        return ResponseEntity.ok(response);
+        var resp = doctorService.createDoctor(request);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor creation failed");
+        return ResponseEntity.ok("Doctor created successfully");
     }
 
-
-    // Endpoint to get a specific doctor by ID
-    @GetMapping("/{doctorId}/staff/{doctorStaffId}")
-    public ResponseEntity<DoctorGetByIdResponse> getDoctorById(
-            @PathVariable int doctorId,
-            @PathVariable int doctorStaffId
+    @GetMapping("/get-by-hospital/{hospitalId}")
+    public ResponseEntity<List<Doctor>> getDoctorsByHospitalId(
+            @PathVariable int hospitalId
     ) {
-        DoctorGetByIdResponse doctor = doctorService.getDoctorById(doctorId, doctorStaffId);
-        if (doctor == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return ResponseEntity.ok(doctor);
+        return ResponseEntity.ok(doctorService.getDoctorsByHospitalId(hospitalId));
     }
 
-    // Endpoint to update doctor details
-    @PutMapping("/update/{doctorId}/staff/{doctorStaffId}")
+    @GetMapping("/get-by-id/{doctorId}/hospital/{hospitalId}")
+    public ResponseEntity<?> getDoctorById(
+            @PathVariable int doctorId, @PathVariable int hospitalId
+    ) {
+        var resp = doctorService.getDoctorById(doctorId, hospitalId);
+        if (resp == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor not found");
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/update-doctor/{doctorId}/hospital/{hospitalId}")
     public ResponseEntity<String> updateDoctor(
-            @PathVariable int doctorId,
-            @PathVariable int doctorStaffId,
-            @RequestBody DoctorCreateRequest request
+            @PathVariable int doctorId, @PathVariable int hospitalId,
+            @RequestBody DoctorUpdateRequest request
     ) {
-        int resp = doctorService.updateDoctor(doctorId, doctorStaffId, request);
-        if (resp < 1) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found or update failed");
-        }
+        var resp = doctorService.updateDoctor(doctorId, hospitalId, request);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor update failed");
         return ResponseEntity.ok("Doctor updated successfully");
     }
 
-    // Endpoint to delete a doctor by ID
-    @DeleteMapping("/{doctorId}/staff/{doctorStaffId}")
-    public ResponseEntity<String> deleteDoctor(
-            @PathVariable int doctorId,
-            @PathVariable int doctorStaffId
+    @DeleteMapping("/delete-by-id/{doctorId}/hospital/{hospitalId}")
+    public ResponseEntity<String> deleteDoctorById(
+            @PathVariable int doctorId, @PathVariable int hospitalId
     ) {
-        int updatedRows = doctorService.deleteDoctorById(doctorId, doctorStaffId);
-
-        if (updatedRows < 1) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found or deletion failed");
-        }
-
-        return ResponseEntity.ok("Doctor removed successfully");
+        var resp = doctorService.deleteDoctorById(doctorId, hospitalId);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor deletion failed");
+        return ResponseEntity.ok("Doctor deleted successfully");
     }
 }

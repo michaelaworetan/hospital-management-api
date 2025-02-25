@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class Staff {
     private int staffId;
     private int staffHospitalId;
+    private String staffName;
     private String staffPosition;
     private String staffDepartment;
     private BigDecimal staffSalary;

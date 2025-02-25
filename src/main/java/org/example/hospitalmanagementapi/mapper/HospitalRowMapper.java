@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class HospitalRowMapper implements RowMapper<Hospital> {
-
     @Override
     public Hospital mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Hospital.builder()
