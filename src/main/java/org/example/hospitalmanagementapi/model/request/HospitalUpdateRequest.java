@@ -1,17 +1,15 @@
-package org.example.hospitalmanagementapi.model.entity;
+package org.example.hospitalmanagementapi.model.request;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class Hospital {
+public class HospitalUpdateRequest {
     private int hospitalId;
     private String hospitalName;
     private String hospitalAddress;
     private String hospitalContactNo;
     private String hospitalEmail;
     private String hospitalStatus;
-    private String hospitalCreatedAt;
-    private String hospitalUpdatedAt;
 }
