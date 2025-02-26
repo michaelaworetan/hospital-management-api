@@ -2,48 +2,31 @@ package org.example.hospitalmanagementapi.repository.query;
 
 public class StaffQuery {
 
-    // Insert a new staff
     public static final String INSERT_STAFF = """
-                INSERT INTO Staff (
-                    staffName, staffHospitalId, staffPosition, staffDepartment,
-                    staffSalary, staffStatus, staffCreatedAt, staffUpdatedAt
-                )
-                VALUES (
-                    :staffName, :staffHospitalId, :staffPosition, :staffDepartment,
-                    :staffSalary, 'ACTIVE', GETDATE(), GETDATE()
-                )
-            """;
+        INSERT INTO Staff (staffHospitalId, staffName, staffPosition, staffDepartment, staffSalary)
+        VALUES (:staffHospitalId, :staffName, :staffPosition, :staffDepartment, :staffSalary)
+        """;
 
-    // Get all active staff for a specific hospital
-    public static final String GET_BY_HOSPITAL_ID = """
-                SELECT * FROM Staff
-                WHERE staffHospitalId = :staffHospitalId AND staffStatus = 'ACTIVE'
-            """;
+    public static final String GET_ALL_STAFF = "SELECT * FROM Staff WHERE staffStatus = 'ACTIVE'";
 
-    // Get active staff by ID
-    public static final String GET_BY_ID = """
-                SELECT * FROM Staff
-                WHERE staffId = :staffId AND staffHospitalId = :staffHospitalId
-                AND staffStatus = 'ACTIVE'
-            """;
+    public static final String GET_STAFF_BY_ID = "SELECT * FROM Staff WHERE staffId = :staffId AND staffStatus = 'ACTIVE'";
 
-    // Update staff information within a hospital
-    public static final String UPDATE_STAFF_BY_ID = """
-                UPDATE Staff
-                SET staffName = :staffName,
-                    staffPosition = :staffPosition,
-                    staffDepartment = :staffDepartment,
-                    staffSalary = :staffSalary,
-                    staffStatus = :staffStatus,
-                    staffUpdatedAt = GETDATE()
-                WHERE staffId = :staffId AND staffHospitalId = :staffHospitalId
-            """;
+    public static final String UPDATE_STAFF = """
+        UPDATE Staff
+        SET staffHospitalId = :staffHospitalId,
+            staffName = :staffName,
+            staffPosition = :staffPosition,
+            staffDepartment = :staffDepartment,
+            staffSalary = :staffSalary,
+            staffStatus = :staffStatus,
+            staffUpdatedAt = GETDATE()
+        WHERE staffId = :staffId
+        """;
 
-    // An hospital can only delete its own staff
     public static final String DELETE_STAFF_BY_ID = """
-                UPDATE Staff
-                SET staffStatus = 'DELETED',
-                    staffUpdatedAt = GETDATE()
-                WHERE staffId = :staffId AND staffHospitalId = :staffHospitalId
-            """;
+        UPDATE Staff
+        SET staffStatus = 'DELETED',
+            staffUpdatedAt = GETDATE()
+        WHERE staffId = :staffId
+        """;
 }

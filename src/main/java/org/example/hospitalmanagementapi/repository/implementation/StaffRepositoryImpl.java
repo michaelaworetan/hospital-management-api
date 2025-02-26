@@ -2,8 +2,6 @@ package org.example.hospitalmanagementapi.repository.implementation;
 
 import org.example.hospitalmanagementapi.mapper.StaffRowMapper;
 import org.example.hospitalmanagementapi.model.entity.Staff;
-import org.example.hospitalmanagementapi.model.request.StaffCreateRequest;
-import org.example.hospitalmanagementapi.model.request.StaffUpdateRequest;
 import org.example.hospitalmanagementapi.repository.Interface.StaffRepository;
 import org.example.hospitalmanagementapi.repository.query.StaffQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,48 +22,43 @@ public class StaffRepositoryImpl implements StaffRepository {
     }
 
     @Override
-    public List<Staff> getStaffByHospitalId(int hospitalId) {
-        MapSqlParameterSource params = new MapSqlParameterSource("staffHospitalId", hospitalId);
-        return jdbcTemplate.query(StaffQuery.GET_BY_HOSPITAL_ID, params, new StaffRowMapper());
+    public List<Staff> getAllStaff() {
+        return jdbcTemplate.query(StaffQuery.GET_ALL_STAFF, new StaffRowMapper());
     }
 
     @Override
-    public Staff getStaffById(int staffId, int hospitalId) {
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("staffId", staffId)
-                .addValue("staffHospitalId", hospitalId);
-        return jdbcTemplate.queryForObject(StaffQuery.GET_BY_ID, params, new StaffRowMapper());
+    public Staff getStaffById(int staffId) {
+        MapSqlParameterSource params = new MapSqlParameterSource("staffId", staffId);
+        return jdbcTemplate.queryForObject(StaffQuery.GET_STAFF_BY_ID, params, new StaffRowMapper());
     }
 
     @Override
-    public int createStaff(StaffCreateRequest staffRequest) {
+    public int createStaff(Staff staff) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("staffName", staffRequest.getStaffName())
-                .addValue("staffHospitalId", staffRequest.getStaffHospitalId())
-                .addValue("staffPosition", staffRequest.getStaffPosition())
-                .addValue("staffDepartment", staffRequest.getStaffDepartment())
-                .addValue("staffSalary", staffRequest.getStaffSalary());
+                .addValue("staffHospitalId", staff.getStaffHospitalId())
+                .addValue("staffName", staff.getStaffName())
+                .addValue("staffPosition", staff.getStaffPosition())
+                .addValue("staffDepartment", staff.getStaffDepartment())
+                .addValue("staffSalary", staff.getStaffSalary());
         return jdbcTemplate.update(StaffQuery.INSERT_STAFF, params);
     }
 
     @Override
-    public int updateStaff(int staffId, int hospitalId, StaffUpdateRequest staffRequest) {
+    public int updateStaff(Staff staff) {
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("staffId", staffId)
-                .addValue("staffHospitalId", hospitalId)
-                .addValue("staffName", staffRequest.getStaffName())
-                .addValue("staffPosition", staffRequest.getStaffPosition())
-                .addValue("staffDepartment", staffRequest.getStaffDepartment())
-                .addValue("staffSalary", staffRequest.getStaffSalary())
-                .addValue("staffStatus", staffRequest.getStaffStatus());
-        return jdbcTemplate.update(StaffQuery.UPDATE_STAFF_BY_ID, params);
+                .addValue("staffId", staff.getStaffId())
+                .addValue("staffHospitalId", staff.getStaffHospitalId())
+                .addValue("staffName", staff.getStaffName())
+                .addValue("staffPosition", staff.getStaffPosition())
+                .addValue("staffDepartment", staff.getStaffDepartment())
+                .addValue("staffSalary", staff.getStaffSalary())
+                .addValue("staffStatus", staff.getStaffStatus());
+        return jdbcTemplate.update(StaffQuery.UPDATE_STAFF, params);
     }
 
     @Override
-    public int deleteStaffById(int staffId, int hospitalId) {
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("staffId", staffId)
-                .addValue("staffHospitalId", hospitalId);
+    public int deleteStaffById(int staffId) {
+        MapSqlParameterSource params = new MapSqlParameterSource("staffId", staffId);
         return jdbcTemplate.update(StaffQuery.DELETE_STAFF_BY_ID, params);
     }
 }

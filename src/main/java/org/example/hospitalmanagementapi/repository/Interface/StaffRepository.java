@@ -1,20 +1,17 @@
 package org.example.hospitalmanagementapi.repository.Interface;
 
 import org.example.hospitalmanagementapi.model.entity.Staff;
-import org.example.hospitalmanagementapi.model.request.StaffCreateRequest;
-import org.example.hospitalmanagementapi.model.request.StaffUpdateRequest;
 
 import java.util.List;
 
 public interface StaffRepository {
+    List<Staff> getAllStaff();
 
-    List<Staff> getStaffByHospitalId(int hospitalId);
+    Staff getStaffById(int staffId);
 
-    Staff getStaffById(int staffId, int hospitalId);
+    int createStaff(Staff staff);
 
-    int createStaff(StaffCreateRequest staffRequest);
+    int updateStaff(Staff staff);
 
-    int updateStaff(int staffId, int hospitalId, StaffUpdateRequest staffRequest);
-
-    int deleteStaffById(int staffId, int hospitalId);
+    int deleteStaffById(int staffId);
 }

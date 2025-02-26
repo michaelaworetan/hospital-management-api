@@ -22,48 +22,37 @@ public class StaffController {
     }
 
     @PostMapping("/create-staff")
-    public ResponseEntity<String> createStaff(
-            @RequestBody StaffCreateRequest request
-    ) {
+    public ResponseEntity<String> createStaff(@RequestBody StaffCreateRequest request) {
         var resp = staffService.createStaff(request);
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff creation failed");
         return ResponseEntity.ok("Staff created successfully");
     }
 
-    @GetMapping("/get-by-hospital/{hospitalId}")
-    public ResponseEntity<List<Staff>> getStaffByHospitalId(
-            @PathVariable int hospitalId
-    ) {
-        return ResponseEntity.ok(staffService.getStaffByHospitalId(hospitalId));
+    @GetMapping("/get-all-staff")
+    public ResponseEntity<List<Staff>> getAllStaff() {
+        return ResponseEntity.ok(staffService.getAllStaff());
     }
 
-    @GetMapping("/get-by-id/{staffId}/hospital/{hospitalId}")
-    public ResponseEntity<?> getStaffById(
-            @PathVariable int staffId, @PathVariable int hospitalId
-    ) {
-        var resp = staffService.getStaffById(staffId, hospitalId);
+    @GetMapping("/get-by-id/{staffId}")
+    public ResponseEntity<?> getStaffById(@PathVariable int staffId) {
+        var resp = staffService.getStaffById(staffId);
         if (resp == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found");
         return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/update-staff/{staffId}/hospital/{hospitalId}")
-    public ResponseEntity<String> updateStaff(
-            @PathVariable int staffId, @PathVariable int hospitalId,
-            @RequestBody StaffUpdateRequest request
-    ) {
-        var resp = staffService.updateStaff(staffId, hospitalId, request);
+    @PutMapping("/update-staff")
+    public ResponseEntity<String> updateStaff(@RequestBody StaffUpdateRequest request) {
+        var resp = staffService.updateStaff(request);
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff update failed");
         return ResponseEntity.ok("Staff updated successfully");
     }
 
-    @DeleteMapping("/delete-by-id/{staffId}/hospital/{hospitalId}")
-    public ResponseEntity<String> deleteStaffById(
-            @PathVariable int staffId, @PathVariable int hospitalId
-    ) {
-        var resp = staffService.deleteStaffById(staffId, hospitalId);
+    @DeleteMapping("/delete-by-id/{staffId}")
+    public ResponseEntity<String> deleteStaffById(@PathVariable int staffId) {
+        var resp = staffService.deleteStaffById(staffId);
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff deletion failed");
         return ResponseEntity.ok("Staff deleted successfully");
