@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class HospitalRepositoryImpl implements HospitalRepository {
 
@@ -19,6 +21,10 @@ public class HospitalRepositoryImpl implements HospitalRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
+    public List<Hospital> getAllHospitals() {
+        return jdbcTemplate.query(HospitalQuery.GET_ALL_HOSPITALS, new HospitalRowMapper());
+    }
 
     @Override
     public Hospital getHospitalById(int hospitalId) {
@@ -30,10 +36,9 @@ public class HospitalRepositoryImpl implements HospitalRepository {
     public int createHospital(Hospital hospital) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("hospitalName", hospital.getHospitalName())
-                .addValue("hospitalEmail", hospital.getHospitalEmail())
                 .addValue("hospitalAddress", hospital.getHospitalAddress())
-                .addValue("hospitalContactNo", hospital.getHospitalContactNo());
-
+                .addValue("hospitalContactNo", hospital.getHospitalContactNo())
+                .addValue("hospitalEmail", hospital.getHospitalEmail());
         return jdbcTemplate.update(HospitalQuery.INSERT_HOSPITAL, params);
     }
 
@@ -42,12 +47,11 @@ public class HospitalRepositoryImpl implements HospitalRepository {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("hospitalId", hospital.getHospitalId())
                 .addValue("hospitalName", hospital.getHospitalName())
-                .addValue("hospitalEmail", hospital.getHospitalEmail())
                 .addValue("hospitalAddress", hospital.getHospitalAddress())
                 .addValue("hospitalContactNo", hospital.getHospitalContactNo())
+                .addValue("hospitalEmail", hospital.getHospitalEmail())
                 .addValue("hospitalStatus", hospital.getHospitalStatus());
-
-        return jdbcTemplate.update(HospitalQuery.UPDATE_HOSPITAL_BY_ID, params);
+        return jdbcTemplate.update(HospitalQuery.UPDATE_HOSPITAL, params);
     }
 
     @Override
