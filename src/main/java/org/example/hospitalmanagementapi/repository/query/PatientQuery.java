@@ -8,6 +8,16 @@ public class PatientQuery {
 
     public static final String GET_ALL_PATIENTS = "SELECT * FROM Patient WHERE patientStatus = 'ACTIVE'";
 
+    public static final String GET_PATIENT_BY_NAME = "SELECT * FROM Patient WHERE patientName = :patientName AND patientStatus = 'ACTIVE'";
+
+    public static final String GET_PATIENT_BY_HOSPITAL_ID = """
+            SELECT * FROM Patient
+            WHERE patientId IN (
+                SELECT patientId FROM Appointment
+                WHERE appointmentHospitalId = :hospitalId and appointmentStatus = 'ACTIVE'
+            ) AND patientStatus = 'ACTIVE'
+            """;
+
     public static final String GET_PATIENT_BY_ID = "SELECT * FROM Patient WHERE patientId = :patientId AND patientStatus = 'ACTIVE'";
 
     public static final String UPDATE_PATIENT = """

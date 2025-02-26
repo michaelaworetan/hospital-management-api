@@ -57,4 +57,19 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Appointment failed to delete");
         return ResponseEntity.ok("Appointment deleted successfully");
     }
+
+    @GetMapping("/get-by-patient-id/{patientId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatientId(@PathVariable int patientId) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByPatientId(patientId));
+    }
+
+    @GetMapping("/get-by-doctor-id/{doctorId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDoctorId(@PathVariable int doctorId) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByDoctorId(doctorId));
+    }
+
+    @GetMapping("/get-by-hospital-id/{hospitalId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByHospitalId(@PathVariable int hospitalId) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByHospitalId(hospitalId));
+    }
 }

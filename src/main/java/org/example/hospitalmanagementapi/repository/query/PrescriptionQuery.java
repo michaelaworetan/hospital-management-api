@@ -26,14 +26,14 @@ public class PrescriptionQuery {
                 prescriptionNote           = :prescriptionNote,
                 prescriptionPrescribedDate = :prescriptionPrescribedDate,
                 prescriptionStatus         = :prescriptionStatus,
-                prescriptionUpdatedAt      = CURRENT_TIMESTAMP()
+                prescriptionUpdatedAt      = GETDATE()
             WHERE prescriptionId = :prescriptionId
             """;
 
     public static final String DELETE_PRESCRIPTION_BY_ID = """
             UPDATE Prescription
             SET prescriptionStatus    = 'DELETED',
-                prescriptionUpdatedAt = CURRENT_TIMESTAMP()
+                prescriptionUpdatedAt = GETDATE()
             WHERE prescriptionId = :prescriptionId
             """;
 }

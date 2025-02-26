@@ -26,14 +26,14 @@ public class PrescriptionItemQuery {
                 prescriptionItemQuantity          = :prescriptionItemQuantity,
                 prescriptionItemDosageInstruction = :prescriptionItemDosageInstruction,
                 prescriptionStatus                = :prescriptionStatus,
-                prescriptionUpdatedAt             = CURRENT_TIMESTAMP()
+                prescriptionUpdatedAt             = GETDATE()
             WHERE prescriptionItemId = :prescriptionItemId
             """;
 
     public static final String DELETE_PRESCRIPTION_ITEM_BY_ID = """
             UPDATE PrescriptionItem
             SET prescriptionStatus    = 'DELETED',
-                prescriptionUpdatedAt = CURRENT_TIMESTAMP()
+                prescriptionUpdatedAt = GETDATE()
             WHERE prescriptionItemId = :prescriptionItemId
             """;
 }

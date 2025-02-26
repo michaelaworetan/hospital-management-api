@@ -10,6 +10,8 @@ public class EquipmentQuery {
 
     public static final String GET_EQUIPMENT_BY_ID = "SELECT * FROM Equipment WHERE equipmentId = :equipmentId AND equipmentStatus = 'ACTIVE'";
 
+    public static final String GET_EQUIPMENTS_BY_HOSPITAL_ID = "SELECT * FROM Equipment WHERE equipmentHospitalId = :equipmentHospitalId AND equipmentStatus = 'ACTIVE'";
+
     public static final String UPDATE_EQUIPMENT = """
         UPDATE Equipment
         SET equipmentHospitalId = :equipmentHospitalId,

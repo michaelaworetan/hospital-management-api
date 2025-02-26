@@ -42,6 +42,11 @@ public class EquipmentController {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/get-by-hospital-id/{hospitalId}")
+    public ResponseEntity<List<Equipment>> getEquipmentByHospitalId(@PathVariable int hospitalId) {
+        return ResponseEntity.ok(equipmentService.getEquipmentsByHospitalId(hospitalId));
+    }
+
     @PutMapping("/update-equipment")
     public ResponseEntity<String> updateEquipment(@RequestBody EquipmentUpdateRequest request) {
         var resp = equipmentService.updateEquipment(request);

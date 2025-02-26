@@ -1,6 +1,8 @@
 package org.example.hospitalmanagementapi.repository.query;
 
 public class DoctorQuery {
+
+    // Insert a new doctor (linked to a specific staff in a hospital)
     public static final String INSERT_DOCTOR = """
             INSERT INTO Doctor (
                 doctorStaffId, doctorSpeciality, doctorLicenseNumber,
@@ -27,9 +29,11 @@ public class DoctorQuery {
             """;
 
     public static final String DELETE_DOCTOR_BY_ID = """
-            UPDATE Doctor
-            SET doctorStatus = 'DELETED',
-                doctorUpdatedAt = GETDATE()
-            WHERE doctorId = :doctorId
+                UPDATE Doctor
+                SET doctorStatus = 'DELETED',
+                    doctorUpdatedAt = GETDATE()
+                WHERE doctorId = :doctorId AND doctorStaffId IN (
+                    SELECT staffId FROM Staff WHERE staffHospitalId = :hospitalId
+                )
             """;
 }

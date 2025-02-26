@@ -14,4 +14,10 @@ public interface AppointmentRepository {
     int updateAppointment(Appointment appointment);
 
     int deleteAppointmentById(int appointmentId);
+
+    List<Appointment> getAppointmentsByPatientId(int patientId);
+
+    List<Appointment> getAppointmentsByDoctorId(int doctorId);
+
+    List<Appointment> getAppointmentsByHospitalId(int hospitalId);
 }

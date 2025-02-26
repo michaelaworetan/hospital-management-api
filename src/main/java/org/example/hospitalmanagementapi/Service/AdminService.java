@@ -15,12 +15,12 @@ import java.util.List;
 public class AdminService {
     private final AdminRepository adminRepository;
 
-//    private final HospitalRepository hospitalRepository;
+    private final HospitalRepository hospitalRepository;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository /*, HospitalRepository hospitalRepository*/) {
+    public AdminService(AdminRepository adminRepository , HospitalRepository hospitalRepository) {
         this.adminRepository = adminRepository;
-//        this.hospitalRepository = hospitalRepository;
+        this.hospitalRepository = hospitalRepository;
     }
 
     public List<Admin> getAllAdmins() {
@@ -33,20 +33,20 @@ public class AdminService {
 
     public int createAdmin(AdminCreateRequest request) {
         Gson gson = new Gson();
-//        var hospital = hospitalRepository.getHospitalById(request.getAdminHospitalId());
-//        if (hospital == null) {
-//            return -1;
-//        }
+        var hospital = hospitalRepository.getHospitalById(request.getAdminHospitalId());
+        if (hospital == null) {
+            return -1;
+        }
         var admin = gson.fromJson(gson.toJson(request), Admin.class);
         return adminRepository.createAdmin(admin);
     }
 
     public int updateAdmin(AdminUpdateRequest request) {
         Gson gson = new Gson();
-        //var hospital = hospitalRepository.getHospitalById(request.getHospitalId());
-//        if (hospital == null) {
-//            return -1;
-//        }
+        var hospital = hospitalRepository.getHospitalById(request.getAdminHospitalId());
+        if (hospital == null) {
+            return -1;
+        }
         var admin = gson.fromJson(gson.toJson(request), Admin.class);
         return adminRepository.updateAdmin(admin);
     }

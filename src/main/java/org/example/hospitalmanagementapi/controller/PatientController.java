@@ -42,6 +42,16 @@ public class PatientController {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/get-by-name/{patientName}")
+    public ResponseEntity<List<Patient>> getPatientByName(@PathVariable String patientName) {
+        return ResponseEntity.ok(patientService.getPatientsByName(patientName));
+    }
+
+    @GetMapping("/get-by-hospital/{hospitalId}")
+    public ResponseEntity<List<Patient>> getPatientByHospital(@PathVariable int hospitalId) {
+        return ResponseEntity.ok(patientService.getPatientsByHospitalId(hospitalId));
+    }
+
     @PutMapping("/update-patient")
     public ResponseEntity<String> updatePatient(@RequestBody PatientUpdateRequest request) {
         var resp = patientService.updatePatient(request);

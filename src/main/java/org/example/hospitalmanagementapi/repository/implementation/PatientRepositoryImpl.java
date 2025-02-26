@@ -59,4 +59,16 @@ public class PatientRepositoryImpl implements PatientRepository {
         MapSqlParameterSource params = new MapSqlParameterSource("patientId", patientId);
         return jdbcTemplate.update(PatientQuery.DELETE_PATIENT_BY_ID, params);
     }
+
+    @Override
+    public List<Patient> getPatientsByName(String name) {
+        MapSqlParameterSource params = new MapSqlParameterSource("patientName", name);
+        return jdbcTemplate.query(PatientQuery.GET_PATIENT_BY_NAME, params, new PatientRowMapper());
+    }
+
+    @Override
+    public List<Patient> getPatientsByHospitalId(int hospitalId) {
+        MapSqlParameterSource params = new MapSqlParameterSource("hospitalId", hospitalId);
+        return jdbcTemplate.query(PatientQuery.GET_PATIENT_BY_HOSPITAL_ID, params, new PatientRowMapper());
+    }
 }

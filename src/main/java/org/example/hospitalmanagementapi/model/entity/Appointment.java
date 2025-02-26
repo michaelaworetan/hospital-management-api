@@ -9,6 +9,7 @@ public class Appointment {
     private int appointmentId;
     private int appointmentPatientId;
     private int appointmentDoctorId;
+    private int appointmentHospitalId;
     private String appointmentDate;
     private String appointmentStatus;
     private String appointmentCreatedAt;

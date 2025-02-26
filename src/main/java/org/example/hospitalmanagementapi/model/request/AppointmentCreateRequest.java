@@ -8,5 +8,6 @@ import lombok.Data;
 public class AppointmentCreateRequest {
     private int appointmentPatientId;
     private int appointmentDoctorId;
+    private int appointmentHospitalId;
     private String appointmentDate;
 }

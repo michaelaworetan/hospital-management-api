@@ -9,6 +9,8 @@ public interface EquipmentRepository {
 
     Equipment getEquipmentById(int equipmentId);
 
+    List<Equipment> getEquipmentsByHospitalId(int hospitalId);
+
     int createEquipment(Equipment equipment);
 
     int updateEquipment(Equipment equipment);

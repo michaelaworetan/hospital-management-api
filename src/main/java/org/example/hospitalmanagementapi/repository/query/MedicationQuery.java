@@ -34,14 +34,14 @@ public class MedicationQuery {
                 medicationStockQuantity = :medicationStockQuantity,
                 medicationExpiryDate   = :medicationExpiryDate,
                 medicationStatus       = :medicationStatus,
-                medicationUpdatedAt    = CURRENT_TIMESTAMP()
+                medicationUpdatedAt    = GETDATE()
             WHERE medicationId = :medicationId
             """;
 
     public static final String DELETE_MEDICATION_BY_ID = """
             UPDATE Medication
             SET medicationStatus    = 'DELETED',
-                medicationUpdatedAt = CURRENT_TIMESTAMP()
+                medicationUpdatedAt = GETDATE()
             WHERE medicationId = :medicationId
             """;
 }

@@ -14,4 +14,8 @@ public interface PatientRepository {
     int updatePatient(Patient patient);
 
     int deletePatientById(int patientId);
+
+    List<Patient> getPatientsByName(String name);
+
+    List<Patient> getPatientsByHospitalId(int hospitalId);
 }

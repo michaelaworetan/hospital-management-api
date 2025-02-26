@@ -33,6 +33,12 @@ package org.example.hospitalmanagementapi.repository.implementation;
             }
 
             @Override
+            public List<Equipment> getEquipmentsByHospitalId(int hospitalId) {
+                MapSqlParameterSource params = new MapSqlParameterSource("equipmentHospitalId", hospitalId);
+                return jdbcTemplate.query(EquipmentQuery.GET_EQUIPMENTS_BY_HOSPITAL_ID, params, new EquipmentRowMapper());
+            }
+
+            @Override
             public int createEquipment(Equipment equipment) {
                 MapSqlParameterSource params = new MapSqlParameterSource()
                         .addValue("equipmentHospitalId", equipment.getEquipmentHospitalId())

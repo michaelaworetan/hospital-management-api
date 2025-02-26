@@ -42,4 +42,12 @@ public class PatientService {
     public int deletePatientById(int patientId) {
         return patientRepository.deletePatientById(patientId);
     }
+
+    public List<Patient> getPatientsByName(String patientName) {
+        return patientRepository.getPatientsByName(patientName);
+    }
+
+    public List<Patient> getPatientsByHospitalId(int hospitalId) {
+        return patientRepository.getPatientsByHospitalId(hospitalId);
+    }
 }
