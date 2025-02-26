@@ -5,6 +5,7 @@ import org.example.hospitalmanagementapi.model.entity.Doctor;
 import org.example.hospitalmanagementapi.model.request.DoctorCreateRequest;
 import org.example.hospitalmanagementapi.model.request.DoctorUpdateRequest;
 import org.example.hospitalmanagementapi.repository.Interface.DoctorRepository;
+import org.example.hospitalmanagementapi.repository.Interface.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,12 @@ import java.util.List;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
-    // private final StaffRepository staffRepository;
+    private final StaffRepository staffRepository;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository /*, StaffRepository staffRepository */) {
+    public DoctorService(DoctorRepository doctorRepository, StaffRepository staffRepository) {
         this.doctorRepository = doctorRepository;
-        // this.staffRepository = staffRepository;
+        this.staffRepository = staffRepository;
     }
 
     public List<Doctor> getAllDoctors() {
@@ -33,10 +34,10 @@ public class DoctorService {
     public int createDoctor(DoctorCreateRequest request) {
         Gson gson = new Gson();
 
-        // var staff = staffRepository.getStaffById(request.getDoctorStaffId());
-        // if (staff == null) {
-        //     return -1;
-        // }
+        var staff = staffRepository.getStaffById(request.getDoctorStaffId());
+        if (staff == null) {
+            return -1;
+        }
 
         var doctor = gson.fromJson(gson.toJson(request), Doctor.class);
         return doctorRepository.createDoctor(doctor);
@@ -45,10 +46,10 @@ public class DoctorService {
     public int updateDoctor(DoctorUpdateRequest request) {
         Gson gson = new Gson();
 
-        // var staff = staffRepository.getStaffById(request.getDoctorStaffId());
-        // if (staff == null) {
-        //     return -1;
-        // }
+        var staff = staffRepository.getStaffById(request.getDoctorStaffId());
+        if (staff == null) {
+            return -1;
+        }
 
         var doctor = gson.fromJson(gson.toJson(request), Doctor.class);
         return doctorRepository.updateDoctor(doctor);
