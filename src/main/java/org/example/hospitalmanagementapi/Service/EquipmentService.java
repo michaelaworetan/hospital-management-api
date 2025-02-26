@@ -5,6 +5,7 @@ import org.example.hospitalmanagementapi.model.entity.Equipment;
 import org.example.hospitalmanagementapi.model.request.EquipmentCreateRequest;
 import org.example.hospitalmanagementapi.model.request.EquipmentUpdateRequest;
 import org.example.hospitalmanagementapi.repository.Interface.EquipmentRepository;
+import org.example.hospitalmanagementapi.repository.Interface.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,13 @@ import java.util.List;
 public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
 
-    //    private final HospitalRepository hospitalRepository;
+        private final HospitalRepository hospitalRepository;
 
 
     @Autowired
-    public EquipmentService(EquipmentRepository equipmentRepository /*, HospitalRepository hospitalRepository*/) {
+    public EquipmentService(EquipmentRepository equipmentRepository , HospitalRepository hospitalRepository) {
         this.equipmentRepository = equipmentRepository;
-        //        this.hospitalRepository = hospitalRepository;
+                this.hospitalRepository = hospitalRepository;
     }
 
     public List<Equipment> getAllEquipments() {
@@ -33,20 +34,20 @@ public class EquipmentService {
 
     public int createEquipment(EquipmentCreateRequest request) {
         Gson gson = new Gson();
-        //        var hospital = hospitalRepository.getHospitalById(request.getAdminHospitalId());
-//        if (hospital == null) {
-//            return -1;
-//        }
+        var hospital = hospitalRepository.getHospitalById(request.getEquipmentHospitalId() );
+        if (hospital == null) {
+            return -1;
+        }
         var equipment = gson.fromJson(gson.toJson(request), Equipment.class);
         return equipmentRepository.createEquipment(equipment);
     }
 
     public int updateEquipment(EquipmentUpdateRequest request) {
         Gson gson = new Gson();
-        //        var hospital = hospitalRepository.getHospitalById(request.getAdminHospitalId());
-//        if (hospital == null) {
-//            return -1;
-//        }
+                var hospital = hospitalRepository.getHospitalById(request.getEquipmentHospitalId());
+        if (hospital == null) {
+            return -1;
+        }
         var equipment = gson.fromJson(gson.toJson(request), Equipment.class);
         return equipmentRepository.updateEquipment(equipment);
     }
