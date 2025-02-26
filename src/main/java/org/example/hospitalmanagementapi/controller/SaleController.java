@@ -27,15 +27,13 @@ public class SaleController {
     ) {
         var resp = saleService.createSale(request);
         if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sale creation failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sale failed to create");
         return ResponseEntity.ok("Sale created successfully");
     }
 
-    @GetMapping("/get-by-prescription/{prescriptionId}")
-    public ResponseEntity<List<Sale>> getSalesByPrescriptionId(
-            @PathVariable int prescriptionId
-    ) {
-        return ResponseEntity.ok(saleService.getSalesByPrescriptionId(prescriptionId));
+    @GetMapping("/get-all-sales")
+    public ResponseEntity<List<Sale>> getAllSales() {
+        return ResponseEntity.ok(saleService.getAllSales());
     }
 
     @GetMapping("/get-by-id/{salesId}")
@@ -48,14 +46,13 @@ public class SaleController {
         return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/update-sale/{salesId}")
+    @PutMapping("/update-sale")
     public ResponseEntity<String> updateSale(
-            @PathVariable int salesId,
             @RequestBody SaleUpdateRequest request
     ) {
-        var resp = saleService.updateSale(salesId, request);
+        var resp = saleService.updateSale(request);
         if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sale update failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sale failed to update");
         return ResponseEntity.ok("Sale updated successfully");
     }
 
@@ -65,7 +62,7 @@ public class SaleController {
     ) {
         var resp = saleService.deleteSaleById(salesId);
         if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sale deletion failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sale failed to delete");
         return ResponseEntity.ok("Sale deleted successfully");
     }
 }

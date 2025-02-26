@@ -13,16 +13,17 @@ import java.util.List;
 @Service
 public class SaleService {
     private final SaleRepository saleRepository;
-//    private final PrescriptionRepository prescriptionRepository;
+
+    // private final PrescriptionRepository prescriptionRepository;
 
     @Autowired
-    public SaleService(SaleRepository saleRepository) {
+    public SaleService(SaleRepository saleRepository /*, PrescriptionRepository prescriptionRepository */) {
         this.saleRepository = saleRepository;
-//        this.prescriptionRepository = prescriptionRepository;
+        // this.prescriptionRepository = prescriptionRepository;
     }
 
-    public List<Sale> getSalesByPrescriptionId(int salesPrescriptionId) {
-        return saleRepository.getSalesByPrescriptionId(salesPrescriptionId);
+    public List<Sale> getAllSales() {
+        return saleRepository.getAllSales();
     }
 
     public Sale getSaleById(int salesId) {
@@ -31,29 +32,21 @@ public class SaleService {
 
     public int createSale(SaleCreateRequest request) {
         Gson gson = new Gson();
-
-        // Validate that the prescription exists before creating sale
-//        var prescription = prescriptionRepository.getPrescriptionById(request.getSalesPrescriptionId());
-//        if (prescription == null) {
-//            return -1;
-//        }
-
+        // var prescription = prescriptionRepository.getPrescriptionById(request.getSalesPrescriptionId());
+        // if (prescription == null) {
+        //     return -1;
+        // }
         var sale = gson.fromJson(gson.toJson(request), Sale.class);
         return saleRepository.createSale(sale);
     }
 
-    public int updateSale(int salesId, SaleUpdateRequest request) {
+    public int updateSale(SaleUpdateRequest request) {
         Gson gson = new Gson();
-
-        // Validate that the prescription exists before updating sale
-//        var prescription = prescriptionRepository.getPrescriptionById(request.getSalesPrescriptionId());
-//        if (prescription == null) {
-//            return -1;
-//        }
-
+        // var prescription = prescriptionRepository.getPrescriptionById(request.getSalesPrescriptionId());
+        // if (prescription == null) {
+        //     return -1;
+        // }
         var sale = gson.fromJson(gson.toJson(request), Sale.class);
-        sale.setSalesId(salesId);
-
         return saleRepository.updateSale(sale);
     }
 

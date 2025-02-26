@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.math.BigDecimal;
 
 public class SaleRowMapper implements RowMapper<Sale> {
     @Override

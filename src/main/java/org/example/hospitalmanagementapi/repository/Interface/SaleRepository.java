@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface SaleRepository {
 
-    int createSale(Sale sale);
+    List<Sale> getAllSales();
 
     Sale getSaleById(int salesId);
 
-    List<Sale> getSalesByPrescriptionId(int salesPrescriptionId);
+    int createSale(Sale sale);
 
     int updateSale(Sale sale);
 

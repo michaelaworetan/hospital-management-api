@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Builder
 public class SaleUpdateRequest {
     private int salesId;
+    private int saleHospitalId;
     private int salesPrescriptionId;
     private int salesQuantity;
     private BigDecimal salesTotalPrice;
