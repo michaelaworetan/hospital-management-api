@@ -9,9 +9,13 @@ public interface StaffRepository {
 
     Staff getStaffById(int staffId);
 
+    List<Staff> getAllStaffByHospitalId(int staffHospitalId);
+
     int createStaff(Staff staff);
 
     int updateStaff(Staff staff);
 
     int deleteStaffById(int staffId);
+
+    List<Staff> getStaffBySalaryRange(double minSalary, double maxSalary);
 }

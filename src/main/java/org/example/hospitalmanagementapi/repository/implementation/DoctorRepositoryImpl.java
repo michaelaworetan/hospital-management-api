@@ -1,7 +1,9 @@
 package org.example.hospitalmanagementapi.repository.implementation;
 
 import org.example.hospitalmanagementapi.mapper.DoctorRowMapper;
+import org.example.hospitalmanagementapi.mapper.DoctorDetailsRowMapper;
 import org.example.hospitalmanagementapi.model.entity.Doctor;
+import org.example.hospitalmanagementapi.model.response.DoctorDetailsResponse;
 import org.example.hospitalmanagementapi.repository.Interface.DoctorRepository;
 import org.example.hospitalmanagementapi.repository.query.DoctorQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +60,11 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     public int deleteDoctorById(int doctorId) {
         MapSqlParameterSource params = new MapSqlParameterSource("doctorId", doctorId);
         return jdbcTemplate.update(DoctorQuery.DELETE_DOCTOR_BY_ID, params);
+    }
+
+    @Override
+    public List<DoctorDetailsResponse> getDoctorDetailsByHospitalId(int hospitalId) {
+        MapSqlParameterSource params = new MapSqlParameterSource("hospitalId", hospitalId);
+        return jdbcTemplate.query(DoctorQuery.GET_DOCTOR_DETAILS_BY_HOSPITAL_ID, params, new DoctorDetailsRowMapper());
     }
 }

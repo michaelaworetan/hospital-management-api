@@ -4,6 +4,7 @@ import org.example.hospitalmanagementapi.Service.DoctorService;
 import org.example.hospitalmanagementapi.model.entity.Doctor;
 import org.example.hospitalmanagementapi.model.request.DoctorCreateRequest;
 import org.example.hospitalmanagementapi.model.request.DoctorUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.DoctorDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class DoctorController {
     public ResponseEntity<String> createDoctor(@RequestBody DoctorCreateRequest request) {
         var resp = doctorService.createDoctor(request);
         if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor creation failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor creation failed: Invalid Staff ID");
         return ResponseEntity.ok("Doctor created successfully");
     }
 
@@ -38,7 +39,7 @@ public class DoctorController {
     public ResponseEntity<?> getDoctorById(@PathVariable int doctorId) {
         var resp = doctorService.getDoctorById(doctorId);
         if (resp == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found");
         return ResponseEntity.ok(resp);
     }
 
@@ -46,7 +47,7 @@ public class DoctorController {
     public ResponseEntity<String> updateDoctor(@RequestBody DoctorUpdateRequest request) {
         var resp = doctorService.updateDoctor(request);
         if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor update failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor update failed: Invalid Staff ID");
         return ResponseEntity.ok("Doctor updated successfully");
     }
 
@@ -56,5 +57,14 @@ public class DoctorController {
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor deletion failed");
         return ResponseEntity.ok("Doctor deleted successfully");
+    }
+
+    @GetMapping("/get-doctor-details-by-hospital/{hospitalId}")
+    public ResponseEntity<?> getDoctorDetailsByHospitalId(@PathVariable int hospitalId) {
+        List<DoctorDetailsResponse> resp = doctorService.getDoctorDetailsByHospitalId(hospitalId);
+        if (resp.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No valid doctors found for this hospital");
+        }
+        return ResponseEntity.ok(resp);
     }
 }

@@ -14,6 +14,12 @@ public class SaleQuery {
             WHERE salesId = :salesId AND salesStatus = 'ACTIVE'
             """;
 
+    public static final String GET_SALES_BY_HOSPITAL_ID = """
+            SELECT * FROM Sale
+            WHERE saleHospitalId = :saleHospitalId
+              AND salesStatus = 'ACTIVE'
+            """;
+
     public static final String UPDATE_SALE = """
             UPDATE Sale
             SET saleHospitalId = :saleHospitalId,

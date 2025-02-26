@@ -10,6 +10,8 @@ public interface SaleRepository {
 
     Sale getSaleById(int salesId);
 
+    List<Sale> getSalesByHospitalId(int saleHospitalId);
+
     int createSale(Sale sale);
 
     int updateSale(Sale sale);

@@ -46,6 +46,16 @@ public class SaleController {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/get-by-hospital/{saleHospitalId}")
+    public ResponseEntity<?> getSalesByHospitalId(
+            @PathVariable int saleHospitalId
+    ) {
+        var resp = saleService.getSalesByHospitalId(saleHospitalId);
+        if (resp.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Sales not found");
+        return ResponseEntity.ok(resp);
+    }
+
     @PutMapping("/update-sale")
     public ResponseEntity<String> updateSale(
             @RequestBody SaleUpdateRequest request

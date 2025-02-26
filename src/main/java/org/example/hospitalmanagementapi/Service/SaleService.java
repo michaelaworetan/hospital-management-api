@@ -31,6 +31,10 @@ public class SaleService {
         return saleRepository.getSaleById(salesId);
     }
 
+    public List<Sale> getSalesByHospitalId(int saleHospitalId) {
+        return saleRepository.getSalesByHospitalId(saleHospitalId);
+    }
+
     public int createSale(SaleCreateRequest request) {
         Gson gson = new Gson();
         var prescription = prescriptionRepository.getPrescriptionById(request.getSalesPrescriptionId());

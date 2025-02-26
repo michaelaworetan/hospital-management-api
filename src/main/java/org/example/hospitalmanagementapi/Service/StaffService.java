@@ -30,10 +30,17 @@ public class StaffService {
         return staffRepository.getStaffById(staffId);
     }
 
+    public List<Staff> getAllStaffByHospitalId(int staffHospitalId) {
+        var hospital = hospitalRepository.getHospitalById(staffHospitalId);
+        if (hospital == null) {
+            return null;
+        }
+        return staffRepository.getAllStaffByHospitalId(staffHospitalId);
+    }
+
     public int createStaff(StaffCreateRequest request) {
         Gson gson = new Gson();
 
-        // Validate hospital existence
         var hospital = hospitalRepository.getHospitalById(request.getStaffHospitalId());
         if (hospital == null) {
             return -1;
@@ -46,7 +53,6 @@ public class StaffService {
     public int updateStaff(StaffUpdateRequest request) {
         Gson gson = new Gson();
 
-        // Validate hospital existence
         var hospital = hospitalRepository.getHospitalById(request.getStaffHospitalId());
         if (hospital == null) {
             return -1;
@@ -58,5 +64,9 @@ public class StaffService {
 
     public int deleteStaffById(int staffId) {
         return staffRepository.deleteStaffById(staffId);
+    }
+
+    public List<Staff> getStaffBySalaryRange(double minSalary, double maxSalary) {
+        return staffRepository.getStaffBySalaryRange(minSalary, maxSalary);
     }
 }
