@@ -5,14 +5,13 @@ import org.example.hospitalmanagementapi.model.entity.Doctor;
 import java.util.List;
 
 public interface DoctorRepository {
+    List<Doctor> getAllDoctors();
+
+    Doctor getDoctorById(int doctorId);
 
     int createDoctor(Doctor doctor);
 
-    Doctor getDoctorById(int doctorId, int hospitalId);
+    int updateDoctor(Doctor doctor);
 
-    List<Doctor> getDoctorsByHospitalId(int hospitalId);
-
-    int updateDoctor(Doctor doctor, int hospitalId);
-
-    int deleteDoctorById(int doctorId, int hospitalId);
+    int deleteDoctorById(int doctorId);
 }
