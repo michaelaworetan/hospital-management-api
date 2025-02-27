@@ -42,6 +42,14 @@ public class StaffController {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/get-all-staff-by-hospital-id/{hospitalId}")
+    public ResponseEntity<?> getAllStaffByHospitalId(@PathVariable int hospitalId) {
+        var resp = staffService.getAllStaffByHospitalId(hospitalId);
+        if (resp == null || resp.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No staff found for this hospital");
+        return ResponseEntity.ok(resp);
+    }
+
     @PutMapping("/update-staff")
     public ResponseEntity<String> updateStaff(@RequestBody StaffUpdateRequest request) {
         var resp = staffService.updateStaff(request);
@@ -56,5 +64,14 @@ public class StaffController {
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff deletion failed");
         return ResponseEntity.ok("Staff deleted successfully");
+    }
+
+
+    @GetMapping("/get-staff-by-salary-range")
+    public ResponseEntity<?> getStaffBySalaryRange(@RequestParam double minSalary, @RequestParam double maxSalary) {
+        var resp = staffService.getStaffBySalaryRange(minSalary, maxSalary);
+        if (resp == null || resp.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No staff found within the given salary range");
+        return ResponseEntity.ok(resp);
     }
 }

@@ -33,6 +33,12 @@ public class SaleRepositoryImpl implements SaleRepository {
     }
 
     @Override
+    public List<Sale> getSalesByHospitalId(int saleHospitalId) {
+        MapSqlParameterSource params = new MapSqlParameterSource("saleHospitalId", saleHospitalId);
+        return jdbcTemplate.query(SaleQuery.GET_SALES_BY_HOSPITAL_ID, params, new SaleRowMapper());
+    }
+
+    @Override
     public int createSale(Sale sale) {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("saleHospitalId", sale.getSaleHospitalId())

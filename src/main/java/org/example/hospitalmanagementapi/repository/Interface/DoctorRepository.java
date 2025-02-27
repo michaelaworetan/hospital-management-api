@@ -1,6 +1,7 @@
 package org.example.hospitalmanagementapi.repository.Interface;
 
 import org.example.hospitalmanagementapi.model.entity.Doctor;
+import org.example.hospitalmanagementapi.model.response.DoctorDetailsResponse;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface DoctorRepository {
     int updateDoctor(Doctor doctor);
 
     int deleteDoctorById(int doctorId);
+
+    List<DoctorDetailsResponse> getDoctorDetailsByHospitalId(int hospitalId);
 }
