@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
-     private final StaffRepository staffRepository;
+    private final StaffRepository staffRepository;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository , StaffRepository staffRepository ) {
+    public DoctorService(DoctorRepository doctorRepository, StaffRepository staffRepository) {
         this.doctorRepository = doctorRepository;
         this.staffRepository = staffRepository;
     }
@@ -36,10 +36,10 @@ public class DoctorService {
     public int createDoctor(DoctorCreateRequest request) {
         Gson gson = new Gson();
 
-         var staff = staffRepository.getStaffById(request.getDoctorStaffId());
-         if (staff == null) {
-             return -1;
-         }
+        var staff = staffRepository.getStaffById(request.getDoctorStaffId());
+        if (staff == null) {
+            return -1;
+        }
 
         var doctor = gson.fromJson(gson.toJson(request), Doctor.class);
         return doctorRepository.createDoctor(doctor);
@@ -48,17 +48,17 @@ public class DoctorService {
     public int updateDoctor(DoctorUpdateRequest request) {
         Gson gson = new Gson();
 
-         var staff = staffRepository.getStaffById(request.getDoctorStaffId());
-         if (staff == null) {
-             return -1;
-         }
+        var staff = staffRepository.getStaffById(request.getDoctorStaffId());
+        if (staff == null) {
+            return -1;
+        }
 
         var doctor = gson.fromJson(gson.toJson(request), Doctor.class);
         return doctorRepository.updateDoctor(doctor);
     }
 
-    public int deleteDoctorById(int doctorId) {
-        return doctorRepository.deleteDoctorById(doctorId);
+    public int deleteDoctorByStaffId(int doctorStaffId) { // Updated method
+        return doctorRepository.deleteDoctorByStaffId(doctorStaffId);
     }
 
     public List<DoctorDetailsResponse> getDoctorDetailsByHospitalId(int hospitalId) {

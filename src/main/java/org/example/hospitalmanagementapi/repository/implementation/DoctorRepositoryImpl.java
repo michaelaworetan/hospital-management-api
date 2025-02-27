@@ -57,9 +57,10 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     }
 
     @Override
-    public int deleteDoctorById(int doctorId) {
-        MapSqlParameterSource params = new MapSqlParameterSource("doctorId", doctorId);
-        return jdbcTemplate.update(DoctorQuery.DELETE_DOCTOR_BY_ID, params);
+    public int deleteDoctorByStaffId(int doctorStaffId) { // Updated method
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("doctorStaffId", doctorStaffId);
+        return jdbcTemplate.update(DoctorQuery.DELETE_DOCTOR_BY_STAFF_ID, params);
     }
 
     @Override
