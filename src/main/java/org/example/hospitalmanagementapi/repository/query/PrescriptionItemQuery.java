@@ -38,17 +38,18 @@ public class PrescriptionItemQuery {
             """;
 
     public static final String GET_PRESCRIPTION_ITEMS_BY_APPOINTMENT_ID = """
-        SELECT pi.prescriptionItemId,
-            m.medicationName,
-            pi.prescriptionItemQuantity,
-            pi.prescriptionItemDosageInstruction
-        FROM Appointment a
-        JOIN Prescription p ON a.appointmentId = p.prescriptionAppointmentId
-        JOIN PrescriptionItem pi ON p.prescriptionId = pi.prescriptionId
-        JOIN Medication m ON pi.prescriptionItemMedicationId = m.medicationId
-        WHERE a.appointmentId = :appointmentId
-          AND a.appointmentStatus = 'ACTIVE'
-          AND p.prescriptionStatus = 'ACTIVE'
-          AND pi.prescriptionStatus = 'ACTIVE'
-        """;
+            SELECT *
+                pi.prescriptionItemId,
+                m.medicationName,
+                pi.prescriptionItemQuantity,
+                pi.prescriptionItemDosageInstruction
+            FROM Appointment a
+            JOIN Prescription p ON a.appointmentId = p.prescriptionAppointmentId
+            JOIN PrescriptionItem pi ON p.prescriptionId = pi.prescriptionId
+            JOIN Medication m ON pi.prescriptionItemMedicationId = m.medicationId
+            WHERE a.appointmentId = :appointmentId
+              AND a.appointmentStatus = 'ACTIVE'
+              AND p.prescriptionStatus = 'ACTIVE'
+              AND pi.prescriptionStatus = 'ACTIVE'
+            """;
 }
