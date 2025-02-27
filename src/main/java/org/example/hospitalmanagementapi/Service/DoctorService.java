@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import org.example.hospitalmanagementapi.model.entity.Doctor;
 import org.example.hospitalmanagementapi.model.request.DoctorCreateRequest;
 import org.example.hospitalmanagementapi.model.request.DoctorUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.DoctorDetailsResponse;
 import org.example.hospitalmanagementapi.repository.Interface.DoctorRepository;
 import org.example.hospitalmanagementapi.repository.Interface.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
@@ -57,5 +59,14 @@ public class DoctorService {
 
     public int deleteDoctorById(int doctorId) {
         return doctorRepository.deleteDoctorById(doctorId);
+    }
+
+    public List<DoctorDetailsResponse> getDoctorDetailsByHospitalId(int hospitalId) {
+
+        List<DoctorDetailsResponse> doctorDetails = doctorRepository.getDoctorDetailsByHospitalId(hospitalId);
+
+        return doctorDetails.stream()
+                .filter(details -> staffRepository.getStaffById(details.getDoctorStaffId()) != null)
+                .collect(Collectors.toList());
     }
 }
