@@ -3,6 +3,7 @@ package org.example.hospitalmanagementapi.controller;
 import org.example.hospitalmanagementapi.Service.AppointmentService;
 import org.example.hospitalmanagementapi.model.entity.Appointment;
 import org.example.hospitalmanagementapi.model.request.AppointmentCreateRequest;
+import org.example.hospitalmanagementapi.model.request.AppointmentDateUpdateRequest;
 import org.example.hospitalmanagementapi.model.request.AppointmentUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,14 @@ public class AppointmentController {
     @PutMapping("/update-appointment")
     public ResponseEntity<String> updateAppointment(@RequestBody AppointmentUpdateRequest request) {
         var resp = appointmentService.updateAppointment(request);
+        if (resp < 1)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Appointment failed to update");
+        return ResponseEntity.ok("Appointment updated successfully");
+    }
+
+    @PutMapping("/update-appointment-date/")
+    public ResponseEntity<String> updateAppointmentDate(@RequestBody AppointmentDateUpdateRequest request) {
+        var resp = appointmentService.updateAppointmentDate(request);
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Appointment failed to update");
         return ResponseEntity.ok("Appointment updated successfully");

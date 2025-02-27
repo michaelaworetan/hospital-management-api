@@ -33,6 +33,13 @@ public class AppointmentQuery {
         WHERE appointmentId = :appointmentId
         """;
 
+    public static final String UPDATE_APPOINTMENT_DATE = """
+        UPDATE Appointment
+        SET appointmentDate = :appointmentDate,
+            appointmentUpdatedAt = GETDATE()
+        WHERE appointmentId = :appointmentId
+        """;
+
     public static final String DELETE_APPOINTMENT_BY_ID = """
         UPDATE Appointment
         SET appointmentStatus = 'DELETED',

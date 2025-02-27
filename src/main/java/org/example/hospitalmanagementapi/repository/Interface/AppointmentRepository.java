@@ -13,6 +13,8 @@ public interface AppointmentRepository {
 
     int updateAppointment(Appointment appointment);
 
+    int updateAppointmentDate(int appointmentId, String appointmentDate);
+
     int deleteAppointmentById(int appointmentId);
 
     List<Appointment> getAppointmentsByPatientId(int patientId);

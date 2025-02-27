@@ -3,6 +3,7 @@ package org.example.hospitalmanagementapi.Service;
 import com.google.gson.Gson;
 import org.example.hospitalmanagementapi.model.entity.Appointment;
 import org.example.hospitalmanagementapi.model.request.AppointmentCreateRequest;
+import org.example.hospitalmanagementapi.model.request.AppointmentDateUpdateRequest;
 import org.example.hospitalmanagementapi.model.request.AppointmentUpdateRequest;
 import org.example.hospitalmanagementapi.repository.Interface.AppointmentRepository;
 import org.example.hospitalmanagementapi.repository.Interface.DoctorRepository;
@@ -54,6 +55,15 @@ public class AppointmentService {
             return -1;
         }
         var appointment = gson.fromJson(gson.toJson(request), Appointment.class);
+        return appointmentRepository.updateAppointment(appointment);
+    }
+
+    public int updateAppointmentDate(AppointmentDateUpdateRequest request){
+        var appointment = appointmentRepository.getAppointmentById(request.getAppointmentId());
+        if(appointment == null){
+            return -1;
+        }
+        appointment.setAppointmentDate(request.getAppointmentDate());
         return appointmentRepository.updateAppointment(appointment);
     }
 

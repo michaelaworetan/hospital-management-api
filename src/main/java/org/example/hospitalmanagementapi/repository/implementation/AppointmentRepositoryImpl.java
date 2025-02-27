@@ -55,6 +55,14 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
+    public int updateAppointmentDate(int appointmentId, String appointmentDate) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("appointmentId", appointmentId)
+                .addValue("appointmentDate", appointmentDate);
+        return jdbcTemplate.update(AppointmentQuery.UPDATE_APPOINTMENT_DATE, params);
+    }
+
+    @Override
     public int deleteAppointmentById(int appointmentId) {
         MapSqlParameterSource params = new MapSqlParameterSource("appointmentId", appointmentId);
         return jdbcTemplate.update(AppointmentQuery.DELETE_APPOINTMENT_BY_ID, params);
