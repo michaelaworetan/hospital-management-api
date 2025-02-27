@@ -4,6 +4,7 @@ import org.example.hospitalmanagementapi.Service.PrescriptionItemService;
 import org.example.hospitalmanagementapi.model.entity.PrescriptionItem;
 import org.example.hospitalmanagementapi.model.request.PrescriptionItemCreateRequest;
 import org.example.hospitalmanagementapi.model.request.PrescriptionItemUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.PrescriptionItemResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +64,11 @@ public class PrescriptionItemController {
         } else {
             return new ResponseEntity<>("Failed to delete prescription item", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/appointment/{appointmentId}")
+    public ResponseEntity<List<PrescriptionItemResponse>> getPrescriptionItemsByAppointmentId(@PathVariable("appointmentId") int appointmentId) {
+        List<PrescriptionItemResponse> responses = prescriptionItemService.getPrescriptionItemsByAppointmentId(appointmentId);
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 }

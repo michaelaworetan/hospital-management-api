@@ -1,14 +1,13 @@
-package org.example.hospitalmanagementapi.model.request;
+package org.example.hospitalmanagementapi.model.response;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class PrescriptionItemUpdateRequest {
+public class PrescriptionItemResponse {
     private int prescriptionItemId;
-    private int prescriptionItemMedicationId;
+    private String medicationName;
     private int prescriptionItemQuantity;
     private String prescriptionItemDosageInstruction;
-    private String prescriptionStatus;
 }

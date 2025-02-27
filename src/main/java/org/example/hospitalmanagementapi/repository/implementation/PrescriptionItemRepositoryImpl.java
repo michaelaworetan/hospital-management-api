@@ -1,8 +1,10 @@
 package org.example.hospitalmanagementapi.repository.implementation;
 
 import org.example.hospitalmanagementapi.model.entity.PrescriptionItem;
+import org.example.hospitalmanagementapi.model.response.PrescriptionItemResponse;
 import org.example.hospitalmanagementapi.repository.Interface.PrescriptionItemRepository;
 import org.example.hospitalmanagementapi.mapper.PrescriptionItemRowMapper;
+import org.example.hospitalmanagementapi.mapper.PrescriptionItemResponseRowMapper;
 import org.example.hospitalmanagementapi.repository.query.PrescriptionItemQuery;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -60,5 +62,16 @@ public class PrescriptionItemRepositoryImpl implements PrescriptionItemRepositor
         Map<String, Object> params = new HashMap<>();
         params.put("prescriptionItemId", prescriptionItemId);
         return jdbcTemplate.update(PrescriptionItemQuery.DELETE_PRESCRIPTION_ITEM_BY_ID, params);
+    }
+
+    @Override
+    public List<PrescriptionItemResponse> getPrescriptionItemsByAppointmentId(int appointmentId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("appointmentId", appointmentId);
+        return jdbcTemplate.query(
+                PrescriptionItemQuery.GET_PRESCRIPTION_ITEMS_BY_APPOINTMENT_ID,
+                params,
+                new PrescriptionItemResponseRowMapper()
+        );
     }
 }
