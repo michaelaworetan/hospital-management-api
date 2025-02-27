@@ -38,8 +38,7 @@ public class PrescriptionItemQuery {
             """;
 
     public static final String GET_PRESCRIPTION_ITEMS_BY_APPOINTMENT_ID = """
-        SELECT *
-            pi.prescriptionItemId,
+        SELECT pi.prescriptionItemId,
             m.medicationName,
             pi.prescriptionItemQuantity,
             pi.prescriptionItemDosageInstruction
