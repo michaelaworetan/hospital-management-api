@@ -9,11 +9,13 @@ public interface MedicationRepository {
 
     List<Medication> getAllMedications();
 
-
     Medication getMedicationById(int medicationId);
 
     int updateMedication(Medication medication);
 
-
     int deleteMedicationById(int medicationId);
+
+    List<Medication> getMedicationsByHospitalId(int medicationHospitalId);
+
+    List<Medication> getExpiredMedicationsByHospitalId(int medicationHospitalId);
 }

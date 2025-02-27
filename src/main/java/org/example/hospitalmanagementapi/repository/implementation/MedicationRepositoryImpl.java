@@ -71,4 +71,18 @@ public class MedicationRepositoryImpl implements MedicationRepository {
         params.put("medicationId", medicationId);
         return jdbcTemplate.update(MedicationQuery.DELETE_MEDICATION_BY_ID, params);
     }
+
+    @Override
+    public List<Medication> getMedicationsByHospitalId(int medicationHospitalId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("medicationHospitalId", medicationHospitalId);
+        return jdbcTemplate.query(MedicationQuery.GET_MEDICATIONS_BY_HOSPITAL_ID, params, medicationRowMapper);
+    }
+
+    @Override
+    public List<Medication> getExpiredMedicationsByHospitalId(int medicationHospitalId) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("medicationHospitalId", medicationHospitalId);
+        return jdbcTemplate.query(MedicationQuery.GET_EXPIRED_MEDICATIONS_BY_HOSPITAL_ID, params, medicationRowMapper);
+    }
 }

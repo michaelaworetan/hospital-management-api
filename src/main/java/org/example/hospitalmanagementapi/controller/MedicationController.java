@@ -65,4 +65,17 @@ public class MedicationController {
             return new ResponseEntity<>("Failed to delete medication", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/hospital/{hospitalId}")
+    public ResponseEntity<List<Medication>> getMedicationsByHospitalId(@PathVariable("hospitalId") int hospitalId) {
+        List<Medication> medications = medicationService.getMedicationsByHospitalId(hospitalId);
+        return new ResponseEntity<>(medications, HttpStatus.OK);
+    }
+
+    @GetMapping("/hospital/{hospitalId}/expired")
+    public ResponseEntity<List<Medication>> getExpiredMedicationsByHospitalId(@PathVariable("hospitalId") int hospitalId) {
+        List<Medication> medications = medicationService.getExpiredMedicationsByHospitalId(hospitalId);
+        return new ResponseEntity<>(medications, HttpStatus.OK);
+    }
+
 }

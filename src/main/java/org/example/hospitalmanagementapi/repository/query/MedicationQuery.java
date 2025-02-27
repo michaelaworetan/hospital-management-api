@@ -44,4 +44,19 @@ public class MedicationQuery {
                 medicationUpdatedAt = GETDATE()
             WHERE medicationId = :medicationId
             """;
+
+    public static final String GET_MEDICATIONS_BY_HOSPITAL_ID = """
+            SELECT *
+            FROM Medication
+            WHERE medicationHospitalId = :medicationHospitalId
+              AND medicationStatus = 'ACTIVE'
+            """;
+
+    public static final String GET_EXPIRED_MEDICATIONS_BY_HOSPITAL_ID = """
+            SELECT *
+            FROM Medication
+            WHERE medicationHospitalId = :medicationHospitalId
+              AND medicationStatus = 'ACTIVE'
+              AND medicationExpiryDate < GETDATE()
+            """;
 }
