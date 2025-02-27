@@ -14,7 +14,7 @@ public interface DoctorRepository {
 
     int updateDoctor(Doctor doctor);
 
-    int deleteDoctorById(int doctorId);
+    int deleteDoctorByStaffId(int doctorStaffId); // Updated method
 
     List<DoctorDetailsResponse> getDoctorDetailsByHospitalId(int hospitalId);
 }

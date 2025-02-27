@@ -51,13 +51,14 @@ public class DoctorController {
         return ResponseEntity.ok("Doctor updated successfully");
     }
 
-    @DeleteMapping("/delete-by-id/{doctorId}")
-    public ResponseEntity<String> deleteDoctorById(@PathVariable int doctorId) {
-        var resp = doctorService.deleteDoctorById(doctorId);
+    @DeleteMapping("/delete-by-staff-id/{doctorStaffId}")
+    public ResponseEntity<String> deleteDoctorByStaffId(@PathVariable int doctorStaffId) {
+        var resp = doctorService.deleteDoctorByStaffId(doctorStaffId);
         if (resp < 1)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor deletion failed");
         return ResponseEntity.ok("Doctor deleted successfully");
     }
+
 
     @GetMapping("/get-doctor-details-by-hospital/{hospitalId}")
     public ResponseEntity<?> getDoctorDetailsByHospitalId(@PathVariable int hospitalId) {

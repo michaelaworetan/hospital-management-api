@@ -43,13 +43,11 @@ public class DoctorQuery {
             WHERE doctorId = :doctorId
             """;
 
-    public static final String DELETE_DOCTOR_BY_ID = """
+    public static final String DELETE_DOCTOR_BY_STAFF_ID = """
                 UPDATE Doctor
                 SET doctorStatus = 'DELETED',
                     doctorUpdatedAt = GETDATE()
-                WHERE doctorId = :doctorId AND doctorStaffId IN (
-                    SELECT staffId FROM Staff WHERE staffHospitalId = :hospitalId
-                )
+                WHERE doctorStaffId = :doctorStaffId
             """;
 
 }
