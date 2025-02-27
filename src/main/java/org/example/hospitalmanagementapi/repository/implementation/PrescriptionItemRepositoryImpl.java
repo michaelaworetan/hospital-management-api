@@ -29,6 +29,7 @@ public class PrescriptionItemRepositoryImpl implements PrescriptionItemRepositor
     public int createPrescriptionItem(PrescriptionItem prescriptionItem) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("prescriptionItemMedicationId", prescriptionItem.getPrescriptionItemMedicationId());
+        params.addValue("prescriptionItemPrescriptionId", prescriptionItem.getPrescriptionItemPrescriptionId());
         params.addValue("prescriptionItemQuantity", prescriptionItem.getPrescriptionItemQuantity());
         params.addValue("prescriptionItemDosageInstruction", prescriptionItem.getPrescriptionItemDosageInstruction());
         return jdbcTemplate.update(PrescriptionItemQuery.INSERT_PRESCRIPTION_ITEM, params);
@@ -51,9 +52,10 @@ public class PrescriptionItemRepositoryImpl implements PrescriptionItemRepositor
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("prescriptionItemId", prescriptionItem.getPrescriptionItemId());
         params.addValue("prescriptionItemMedicationId", prescriptionItem.getPrescriptionItemMedicationId());
+        params.addValue("prescriptionItemPrescriptionId", prescriptionItem.getPrescriptionItemPrescriptionId());
         params.addValue("prescriptionItemQuantity", prescriptionItem.getPrescriptionItemQuantity());
         params.addValue("prescriptionItemDosageInstruction", prescriptionItem.getPrescriptionItemDosageInstruction());
-        params.addValue("prescriptionStatus", prescriptionItem.getPrescriptionStatus());
+        params.addValue("prescriptionStatus", prescriptionItem.getPrescriptionItemStatus());
         return jdbcTemplate.update(PrescriptionItemQuery.UPDATE_PRESCRIPTION_ITEM, params);
     }
 

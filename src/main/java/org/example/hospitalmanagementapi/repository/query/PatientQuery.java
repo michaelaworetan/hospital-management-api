@@ -13,7 +13,7 @@ public class PatientQuery {
     public static final String GET_PATIENT_BY_HOSPITAL_ID = """
             SELECT * FROM Patient
             WHERE patientId IN (
-                SELECT patientId FROM Appointment
+                SELECT appointmentPatientId FROM Appointment
                 WHERE appointmentHospitalId = :hospitalId and appointmentStatus = 'ACTIVE'
             ) AND patientStatus = 'ACTIVE'
             """;
@@ -33,7 +33,7 @@ public class PatientQuery {
 
     public static final String DELETE_PATIENT_BY_ID = """
         UPDATE Patient
-        SET patientStatus = 'DELETED'
+        SET patientStatus = 'DELETED',
             patientUpdatedAt = GETDATE()
         WHERE patientId = :patientId
         """;

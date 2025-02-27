@@ -12,12 +12,13 @@ public class PrescriptionItemRowMapper implements RowMapper<PrescriptionItem> {
     public PrescriptionItem mapRow(ResultSet rs, int rowNum) throws SQLException {
         return PrescriptionItem.builder()
                 .prescriptionItemId(rs.getInt("prescriptionItemId"))
-                .prescriptionItemMedicationId(rs.getString("prescriptionItemMedicationId"))
+                .prescriptionItemMedicationId(rs.getInt("prescriptionItemMedicationId"))
+                .prescriptionItemPrescriptionId(rs.getInt("prescriptionItemPrescriptionId"))
                 .prescriptionItemQuantity(rs.getInt("prescriptionItemQuantity"))
                 .prescriptionItemDosageInstruction(rs.getString("prescriptionItemDosageInstruction"))
-                .prescriptionStatus(rs.getString("prescriptionStatus"))
-                .prescriptionCreatedAt(rs.getString("prescriptionCreatedAt"))
-                .prescriptionUpdatedAt(rs.getString("prescriptionUpdatedAt"))
+                .prescriptionItemStatus(rs.getString("prescriptionItemStatus"))
+                .prescriptionItemCreatedAt(rs.getString("prescriptionItemCreatedAt"))
+                .prescriptionItemUpdatedAt(rs.getString("prescriptionItemUpdatedAt"))
                 .build();
     }
 }

@@ -39,7 +39,7 @@ public class PrescriptionItemService {
             return -1;
         }
         var prescriptionItem = gson.fromJson(gson.toJson(request), PrescriptionItem.class);
-        prescriptionItem.setPrescriptionStatus("ACTIVE");
+        prescriptionItem.setPrescriptionItemStatus("ACTIVE");
         return prescriptionItemRepository.createPrescriptionItem(prescriptionItem);
     }
 

@@ -8,7 +8,8 @@ import lombok.Data;
 public class PrescriptionItemUpdateRequest {
     private int prescriptionItemId;
     private int prescriptionItemMedicationId;
+    private int prescriptionItemPrescriptionId;
     private int prescriptionItemQuantity;
     private String prescriptionItemDosageInstruction;
-    private String prescriptionStatus;
+    private String prescriptionItemStatus;
 }

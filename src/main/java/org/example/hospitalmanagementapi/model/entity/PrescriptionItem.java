@@ -7,10 +7,11 @@ import lombok.Data;
 @Builder
 public class PrescriptionItem {
     private int prescriptionItemId;
-    private String prescriptionItemMedicationId;
+    private int prescriptionItemMedicationId;
+    private int prescriptionItemPrescriptionId;
     private int prescriptionItemQuantity;
     private String prescriptionItemDosageInstruction;
-    private String prescriptionStatus;
-    private String prescriptionCreatedAt;
-    private String prescriptionUpdatedAt;
+    private String prescriptionItemStatus;
+    private String prescriptionItemCreatedAt;
+    private String prescriptionItemUpdatedAt;
 }

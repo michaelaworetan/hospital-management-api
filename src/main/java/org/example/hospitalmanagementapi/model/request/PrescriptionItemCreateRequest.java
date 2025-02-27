@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class PrescriptionItemCreateRequest {
     private int prescriptionItemMedicationId;
+    private int prescriptionItemPrescriptionId;
     private int prescriptionItemQuantity;
     private String prescriptionItemDosageInstruction;
 }

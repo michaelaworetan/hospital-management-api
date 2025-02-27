@@ -13,4 +13,5 @@ public class MedicationUpdateRequest {
     private int medicationHospitalId;
     private int medicationStockQuantity;
     private String medicationExpiryDate;
+    private String medicationStatus;
 }
