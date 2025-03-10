@@ -4,12 +4,11 @@ import org.example.hospitalmanagementapi.Service.PatientService;
 import org.example.hospitalmanagementapi.model.entity.Patient;
 import org.example.hospitalmanagementapi.model.request.PatientCreateRequest;
 import org.example.hospitalmanagementapi.model.request.PatientUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.PatientListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.PatientSingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/patient")
@@ -22,49 +21,37 @@ public class PatientController {
     }
 
     @PostMapping("/create-patient")
-    public ResponseEntity<String> createPatient(@RequestBody PatientCreateRequest request) {
-        var resp = patientService.createPatient(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Patient failed to create");
-        return ResponseEntity.ok("Patient created successfully");
+    public BaseResponse createPatient(@RequestBody PatientCreateRequest request) {
+        return patientService.createPatient(request);
     }
 
     @GetMapping("/get-all-patients")
-    public ResponseEntity<List<Patient>> getAllPatients() {
-        return ResponseEntity.ok(patientService.getAllPatients());
+    public PatientListResponse getAllPatients() {
+        return patientService.getAllPatients();
     }
 
     @GetMapping("/get-by-id/{patientId}")
-    public ResponseEntity<?> getPatientById(@PathVariable int patientId) {
-        var resp = patientService.getPatientById(patientId);
-        if(resp == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Patient not found");
-        return ResponseEntity.ok(resp);
+    public PatientSingleResponse getPatientById(@PathVariable int patientId) {
+        return patientService.getPatientById(patientId);
     }
 
     @GetMapping("/get-by-name/{patientName}")
-    public ResponseEntity<List<Patient>> getPatientByName(@PathVariable String patientName) {
-        return ResponseEntity.ok(patientService.getPatientsByName(patientName));
+    public PatientListResponse getPatientByName(@PathVariable String patientName) {
+        return patientService.getPatientsByName(patientName);
     }
 
     @GetMapping("/get-by-hospital/{hospitalId}")
-    public ResponseEntity<List<Patient>> getPatientByHospital(@PathVariable int hospitalId) {
-        return ResponseEntity.ok(patientService.getPatientsByHospitalId(hospitalId));
+    public PatientListResponse getPatientByHospital(@PathVariable int hospitalId) {
+        return patientService.getPatientsByHospitalId(hospitalId);
     }
 
     @PutMapping("/update-patient")
-    public ResponseEntity<String> updatePatient(@RequestBody PatientUpdateRequest request) {
-        var resp = patientService.updatePatient(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Patient failed to update");
-        return ResponseEntity.ok("Patient updated successfully");
+    public BaseResponse updatePatient(@RequestBody PatientUpdateRequest request) {
+        return patientService.updatePatient(request);
     }
 
     @DeleteMapping("/delete-by-id/{patientId}")
-    public ResponseEntity<String> deletePatientById(@PathVariable int patientId) {
-        var resp = patientService.deletePatientById(patientId);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Patient failed to delete");
-        return ResponseEntity.ok("Patient deleted successfully");
+    public BaseResponse deletePatientById(@PathVariable int patientId) {
+        return patientService.deletePatientById(patientId);
     }
 }

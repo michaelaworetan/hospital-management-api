@@ -12,7 +12,7 @@ public class Sale {
     private int saleHospitalId;
     private int salesPrescriptionId;
     private int salesQuantity;
-    private BigDecimal salesTotalPrice;
+    private Double salesTotalPrice;
     private String salesStatus;
     private String salesCreatedAt;
     private String salesUpdatedAt;

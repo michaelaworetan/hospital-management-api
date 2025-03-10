@@ -4,7 +4,11 @@ import com.google.gson.Gson;
 import org.example.hospitalmanagementapi.model.entity.Patient;
 import org.example.hospitalmanagementapi.model.request.PatientCreateRequest;
 import org.example.hospitalmanagementapi.model.request.PatientUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.PatientListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.PatientSingleResponse;
 import org.example.hospitalmanagementapi.repository.Interface.PatientRepository;
+import org.example.hospitalmanagementapi.utility.ResponseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,35 +23,62 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public List<Patient> getAllPatients() {
-        return patientRepository.getAllPatients();
+    public PatientListResponse getAllPatients() {
+        var patients = patientRepository.getAllPatients();
+
+        return PatientListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .patients(patients)
+                .build();
     }
 
-    public Patient getPatientById(int patientId) {
-        return patientRepository.getPatientById(patientId);
+    public PatientSingleResponse getPatientById(int patientId) {
+        var patient = patientRepository.getPatientById(patientId);
+
+        return PatientSingleResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .patient(patient)
+                .build();
     }
 
-    public int createPatient(PatientCreateRequest request) {
+    public BaseResponse createPatient(PatientCreateRequest request) {
         Gson gson = new Gson();
         var patient = gson.fromJson(gson.toJson(request), Patient.class);
-        return patientRepository.createPatient(patient);
+        patientRepository.createPatient(patient);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int updatePatient(PatientUpdateRequest request) {
+    public BaseResponse updatePatient(PatientUpdateRequest request) {
         Gson gson = new Gson();
         var patient = gson.fromJson(gson.toJson(request), Patient.class);
-        return patientRepository.updatePatient(patient);
+        patientRepository.updatePatient(patient);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int deletePatientById(int patientId) {
-        return patientRepository.deletePatientById(patientId);
+    public BaseResponse deletePatientById(int patientId) {
+        patientRepository.deletePatientById(patientId);
+        return ResponseConstants.SUCCESS;
     }
 
-    public List<Patient> getPatientsByName(String patientName) {
-        return patientRepository.getPatientsByName(patientName);
+    public PatientListResponse getPatientsByName(String patientName) {
+        var patients =  patientRepository.getPatientsByName(patientName);
+
+        return PatientListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .patients(patients)
+                .build();
     }
 
-    public List<Patient> getPatientsByHospitalId(int hospitalId) {
-        return patientRepository.getPatientsByHospitalId(hospitalId);
+    public PatientListResponse getPatientsByHospitalId(int hospitalId) {
+        var patients = patientRepository.getPatientsByHospitalId(hospitalId);
+
+        return PatientListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .patients(patients)
+                .build();
     }
 }

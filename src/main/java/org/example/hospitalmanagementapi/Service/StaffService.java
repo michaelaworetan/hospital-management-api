@@ -4,8 +4,12 @@ import com.google.gson.Gson;
 import org.example.hospitalmanagementapi.model.entity.Staff;
 import org.example.hospitalmanagementapi.model.request.StaffCreateRequest;
 import org.example.hospitalmanagementapi.model.request.StaffUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.StaffListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.StaffSingleResponse;
 import org.example.hospitalmanagementapi.repository.Interface.HospitalRepository;
 import org.example.hospitalmanagementapi.repository.Interface.StaffRepository;
+import org.example.hospitalmanagementapi.utility.ResponseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,51 +26,79 @@ public class StaffService {
         this.hospitalRepository = hospitalRepository;
     }
 
-    public List<Staff> getAllStaff() {
-        return staffRepository.getAllStaff();
+    public StaffListResponse getAllStaff() {
+        var staffs = staffRepository.getAllStaff();
+        return StaffListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .staffs(staffs)
+                .build();
     }
 
-    public Staff getStaffById(int staffId) {
-        return staffRepository.getStaffById(staffId);
+    public StaffSingleResponse getStaffById(int staffId) {
+        var staff = staffRepository.getStaffById(staffId);
+        return StaffSingleResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .staff(staff)
+                .build();
     }
 
-    public List<Staff> getAllStaffByHospitalId(int staffHospitalId) {
+    public StaffListResponse getAllStaffByHospitalId(int staffHospitalId) {
         var hospital = hospitalRepository.getHospitalById(staffHospitalId);
         if (hospital == null) {
-            return null;
+            return StaffListResponse.builder()
+                    .responseCode("106")
+                    .responseMessage("Hospital not found")
+                    .staffs(List.of())
+                    .build();
         }
-        return staffRepository.getAllStaffByHospitalId(staffHospitalId);
+        var staffs = staffRepository.getAllStaffByHospitalId(staffHospitalId);
+        return StaffListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .staffs(staffs)
+                .build();
     }
 
-    public int createStaff(StaffCreateRequest request) {
+    public BaseResponse createStaff(StaffCreateRequest request) {
         Gson gson = new Gson();
 
         var hospital = hospitalRepository.getHospitalById(request.getStaffHospitalId());
         if (hospital == null) {
-            return -1;
+            return new BaseResponse("106", "Hospital not found");
         }
 
         var staff = gson.fromJson(gson.toJson(request), Staff.class);
-        return staffRepository.createStaff(staff);
+        staffRepository.createStaff(staff);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int updateStaff(StaffUpdateRequest request) {
+    public BaseResponse updateStaff(StaffUpdateRequest request) {
         Gson gson = new Gson();
 
         var hospital = hospitalRepository.getHospitalById(request.getStaffHospitalId());
         if (hospital == null) {
-            return -1;
+            return new BaseResponse("106", "Hospital not found");
         }
 
         var staff = gson.fromJson(gson.toJson(request), Staff.class);
-        return staffRepository.updateStaff(staff);
+        staffRepository.updateStaff(staff);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int deleteStaffById(int staffId) {
-        return staffRepository.deleteStaffById(staffId);
+    public BaseResponse deleteStaffById(int staffId) {
+        staffRepository.deleteStaffById(staffId);
+        return ResponseConstants.SUCCESS;
     }
 
-    public List<Staff> getStaffBySalaryRange(double minSalary, double maxSalary) {
-        return staffRepository.getStaffBySalaryRange(minSalary, maxSalary);
+    public StaffListResponse getStaffBySalaryRange(double minSalary, double maxSalary) {
+        var staffs = staffRepository.getStaffBySalaryRange(minSalary, maxSalary);
+
+        return StaffListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .staffs(staffs)
+                .build();
     }
 }

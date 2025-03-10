@@ -6,21 +6,70 @@ public class AppointmentQuery {
         VALUES (:appointmentPatientId, :appointmentDoctorId, :appointmentHospitalId, :appointmentDate)
         """;
 
-    public static final String GET_ALL_APPOINTMENTS = "SELECT * FROM Appointment WHERE appointmentStatus = 'ACTIVE'";
-
-    public static final String GET_APPOINTMENTS_BY_PATIENT_ID = "SELECT * FROM Appointment WHERE appointmentPatientId = :appointmentPatientId AND appointmentStatus = 'ACTIVE'";
-
-    public static final String GET_APPOINTMENTS_BY_DOCTOR_ID = "SELECT * FROM Appointment WHERE appointmentDoctorId = :appointmentDoctorId AND appointmentStatus = 'ACTIVE'";
-
-    public static final String GET_APPOINTMENTS_BY_HOSPITAL_ID = """
-            SELECT a.*, s.staffName AS appointmentDoctorName, p.patientName AS appointmentPatientName FROM Appointment a
+    public static final String GET_ALL_APPOINTMENTS = """
+            SELECT a.*,
+             s.staffName AS appointmentDoctorName, d.doctorSpeciality AS appointmentDoctorSpeciality, d.doctorLicenseNumber AS appointmentDoctorLicenseNumber,
+             p.patientName AS appointmentPatientName, p.patientDateOfBirth AS appointmentPatientDateOfBirth, p.patientGender AS appointmentPatientGender,
+             h.hospitalName AS appointmentHospitalName,
+            FROM Appointment a
             LEFT JOIN Doctor d ON a.appointmentDoctorId = d.doctorId
             LEFT JOIN STAFF s ON d.doctorStaffId = s.staffId
             LEFT JOIN Patient p ON a.appointmentPatientId = p.patientId
+            LEFT JOIN Hospital h ON a.appointmentHospitalId = h.hospitalId
+            WHERE appointmentStatus = 'ACTIVE'
+            """;
+
+    public static final String GET_APPOINTMENTS_BY_PATIENT_ID = """
+            SELECT a.*,
+             s.staffName AS appointmentDoctorName, d.doctorSpeciality AS appointmentDoctorSpeciality, d.doctorLicenseNumber AS appointmentDoctorLicenseNumber,
+             p.patientName AS appointmentPatientName, p.patientDateOfBirth AS appointmentPatientDateOfBirth, p.patientGender AS appointmentPatientGender,
+             h.hospitalName AS appointmentHospitalName,
+            FROM Appointment a
+            LEFT JOIN Doctor d ON a.appointmentDoctorId = d.doctorId
+            LEFT JOIN STAFF s ON d.doctorStaffId = s.staffId
+            LEFT JOIN Patient p ON a.appointmentPatientId = p.patientId
+            LEFT JOIN Hospital h ON a.appointmentHospitalId = h.hospitalId
+            WHERE appointmentPatientId = :appointmentPatientId AND appointmentStatus = 'ACTIVE'
+            """;
+
+    public static final String GET_APPOINTMENTS_BY_DOCTOR_ID = """
+            SELECT a.*,
+             s.staffName AS appointmentDoctorName, d.doctorSpeciality AS appointmentDoctorSpeciality, d.doctorLicenseNumber AS appointmentDoctorLicenseNumber,
+             p.patientName AS appointmentPatientName, p.patientDateOfBirth AS appointmentPatientDateOfBirth, p.patientGender AS appointmentPatientGender,
+             h.hospitalName AS appointmentHospitalName,
+            FROM Appointment a
+            LEFT JOIN Doctor d ON a.appointmentDoctorId = d.doctorId
+            LEFT JOIN STAFF s ON d.doctorStaffId = s.staffId
+            LEFT JOIN Patient p ON a.appointmentPatientId = p.patientId
+            LEFT JOIN Hospital h ON a.appointmentHospitalId = h.hospitalId
+            WHERE appointmentDoctorId = :appointmentDoctorId AND appointmentStatus = 'ACTIVE'
+            """;
+
+    public static final String GET_APPOINTMENTS_BY_HOSPITAL_ID = """
+            SELECT a.*,
+             s.staffName AS appointmentDoctorName, d.doctorSpeciality AS appointmentDoctorSpeciality, d.doctorLicenseNumber AS appointmentDoctorLicenseNumber,
+             p.patientName AS appointmentPatientName, p.patientDateOfBirth AS appointmentPatientDateOfBirth, p.patientGender AS appointmentPatientGender,
+             h.hospitalName AS appointmentHospitalName,
+            FROM Appointment a
+            LEFT JOIN Doctor d ON a.appointmentDoctorId = d.doctorId
+            LEFT JOIN STAFF s ON d.doctorStaffId = s.staffId
+            LEFT JOIN Patient p ON a.appointmentPatientId = p.patientId
+            LEFT JOIN Hospital h ON a.appointmentHospitalId = h.hospitalId
             WHERE a.appointmentHospitalId = :appointmentHospitalId AND a.appointmentStatus = 'ACTIVE'
             """;
 
-    public static final String GET_APPOINTMENT_BY_ID = "SELECT * FROM Appointment WHERE appointmentId = :appointmentId AND appointmentStatus = 'ACTIVE'";
+    public static final String GET_APPOINTMENT_BY_ID = """
+            SELECT a.*,
+             s.staffName AS appointmentDoctorName, d.doctorSpeciality AS appointmentDoctorSpeciality, d.doctorLicenseNumber AS appointmentDoctorLicenseNumber,
+             p.patientName AS appointmentPatientName, p.patientDateOfBirth AS appointmentPatientDateOfBirth, p.patientGender AS appointmentPatientGender,
+             h.hospitalName AS appointmentHospitalName,
+            FROM Appointment a
+            LEFT JOIN Doctor d ON a.appointmentDoctorId = d.doctorId
+            LEFT JOIN STAFF s ON d.doctorStaffId = s.staffId
+            LEFT JOIN Patient p ON a.appointmentPatientId = p.patientId
+            LEFT JOIN Hospital h ON a.appointmentHospitalId = h.hospitalId
+            WHERE a.appointmentId = :appointmentId AND a.appointmentStatus = 'ACTIVE'
+            """;
 
     public static final String UPDATE_APPOINTMENT = """
         UPDATE Appointment

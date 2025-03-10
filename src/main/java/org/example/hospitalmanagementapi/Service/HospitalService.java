@@ -4,7 +4,11 @@ import com.google.gson.Gson;
 import org.example.hospitalmanagementapi.model.entity.Hospital;
 import org.example.hospitalmanagementapi.model.request.HospitalCreateRequest;
 import org.example.hospitalmanagementapi.model.request.HospitalUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.HospitalListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.HospitalSingleResponse;
 import org.example.hospitalmanagementapi.repository.Interface.HospitalRepository;
+import org.example.hospitalmanagementapi.utility.ResponseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,27 +23,41 @@ public class HospitalService {
         this.hospitalRepository = hospitalRepository;
     }
 
-    public List<Hospital> getAllHospitals() {
-        return hospitalRepository.getAllHospitals();
+    public HospitalListResponse getAllHospitals() {
+        var hospitals =  hospitalRepository.getAllHospitals();
+
+        return HospitalListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .hsopitals(hospitals)
+                .build();
     }
 
-    public Hospital getHospitalById(int hospitalId) {
-        return hospitalRepository.getHospitalById(hospitalId);
+    public HospitalSingleResponse getHospitalById(int hospitalId) {
+        var hospital =  hospitalRepository.getHospitalById(hospitalId);
+        return HospitalSingleResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .hospital(hospital)
+                .build();
     }
 
-    public int createHospital(HospitalCreateRequest request) {
+    public BaseResponse createHospital(HospitalCreateRequest request) {
         Gson gson = new Gson();
         var hospital = gson.fromJson(gson.toJson(request), Hospital.class);
-        return hospitalRepository.createHospital(hospital);
+        hospitalRepository.createHospital(hospital);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int updateHospital(HospitalUpdateRequest request) {
+    public BaseResponse updateHospital(HospitalUpdateRequest request) {
         Gson gson = new Gson();
         var hospital = gson.fromJson(gson.toJson(request), Hospital.class);
-        return hospitalRepository.updateHospital(hospital);
+        hospitalRepository.updateHospital(hospital);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int deleteHospitalById(int hospitalId) {
-        return hospitalRepository.deleteHospitalById(hospitalId);
+    public BaseResponse deleteHospitalById(int hospitalId) {
+        hospitalRepository.deleteHospitalById(hospitalId);
+        return ResponseConstants.SUCCESS;
     }
 }

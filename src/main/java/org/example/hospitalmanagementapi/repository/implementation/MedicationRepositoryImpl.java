@@ -1,6 +1,8 @@
 package org.example.hospitalmanagementapi.repository.implementation;
 
+import org.example.hospitalmanagementapi.mapper.MedicationResponseRowMapper;
 import org.example.hospitalmanagementapi.model.entity.Medication;
+import org.example.hospitalmanagementapi.model.response.MedicationResponse;
 import org.example.hospitalmanagementapi.repository.Interface.MedicationRepository;
 import org.example.hospitalmanagementapi.mapper.MedicationRowMapper;
 import org.example.hospitalmanagementapi.repository.query.MedicationQuery;
@@ -63,6 +65,22 @@ public class MedicationRepositoryImpl implements MedicationRepository {
         params.addValue("medicationStatus", medication.getMedicationStatus());
 
         return jdbcTemplate.update(MedicationQuery.UPDATE_MEDICATION, params);
+    }
+
+    @Override
+    public int updateMedicationStockQuantity(int medicationId, int medicationStockQuantity) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("medicationId", medicationId);
+        params.addValue("medicationStockQuantity",medicationStockQuantity);
+
+        return jdbcTemplate.update(MedicationQuery.UPDATE_MEDICATION, params);
+    }
+
+    @Override
+    public List<MedicationResponse> getMedicationSalesReport(int medicationHospitalId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("medicationHospitalId", medicationHospitalId);
+        return jdbcTemplate.query(MedicationQuery.GENERATE_MEDICATION_REPORT, params, new MedicationResponseRowMapper());
     }
 
     @Override

@@ -20,7 +20,12 @@ public class AppointmentResponseRowMapper implements RowMapper<AppointmentRespon
                 .appointmentCreatedAt(rs.getString("appointmentCreatedAt"))
                 .appointmentUpdatedAt(rs.getString("appointmentUpdatedAt"))
                 .appointmentDoctorName(rs.getString("appointmentDoctorName"))
+                .appointmentDoctorSpeciality(rs.getString("appointmentDoctorSpeciality"))
+                .appointmentDoctorLicenseNumber(rs.getString("appointmentDoctorLicenseNumber"))
                 .appointmentPatientName(rs.getString("appointmentPatientName"))
+                .appointmentPatientDateOfBirth(rs.getString("appointmentPatientDateOfBirth"))
+                .appointmentPatientGender(rs.getString("appointmentPatientGender"))
+                .appointmentHospitalName(rs.getString("appointmentHospitalName"))
                 .build();
     }
 }

@@ -5,9 +5,14 @@ import org.example.hospitalmanagementapi.model.entity.Appointment;
 import org.example.hospitalmanagementapi.model.request.AppointmentCreateRequest;
 import org.example.hospitalmanagementapi.model.request.AppointmentDateUpdateRequest;
 import org.example.hospitalmanagementapi.model.request.AppointmentUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.AppointmentResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.AppointmentListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.AppointmentSingleResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
 import org.example.hospitalmanagementapi.repository.Interface.AppointmentRepository;
 import org.example.hospitalmanagementapi.repository.Interface.DoctorRepository;
 import org.example.hospitalmanagementapi.repository.Interface.PatientRepository;
+import org.example.hospitalmanagementapi.utility.ResponseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,58 +33,102 @@ public class AppointmentService {
         this.doctorRepository = doctorRepository;
     }
 
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepository.getAllAppointments();
+    public AppointmentListResponse getAllAppointments() {
+        var appointments =  appointmentRepository.getAllAppointments();
+        return AppointmentListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .appointments(appointments)
+                .build();
     }
 
-    public Appointment getAppointmentById(int appointmentId) {
-        return appointmentRepository.getAppointmentById(appointmentId);
+    public AppointmentSingleResponse getAppointmentById(int appointmentId) {
+        var appointment =  appointmentRepository.getAppointmentById(appointmentId);
+        return AppointmentSingleResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .appointment(appointment)
+                .build();
     }
 
-    public int createAppointment(AppointmentCreateRequest request) {
+    public BaseResponse createAppointment(AppointmentCreateRequest request) {
         Gson gson = new Gson();
         var patient = patientRepository.getPatientById(request.getAppointmentPatientId());
         var doctor = doctorRepository.getDoctorById(request.getAppointmentDoctorId());
-        if (patient == null || doctor == null) {
-            return -1;
+        if (patient == null) {
+            return new BaseResponse("106", "Patient not found");
+        }
+        if(doctor == null){
+            return new BaseResponse("106", "Doctor not found");
         }
         var appointment = gson.fromJson(gson.toJson(request), Appointment.class);
-        return appointmentRepository.createAppointment(appointment);
+        appointmentRepository.createAppointment(appointment);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int updateAppointment(AppointmentUpdateRequest request) {
+    public BaseResponse updateAppointment(AppointmentUpdateRequest request) {
         Gson gson = new Gson();
+        var appointmentToBeValidated = appointmentRepository.getAppointmentById(request.getAppointmentId());
         var patient = patientRepository.getPatientById(request.getAppointmentPatientId());
         var doctor = doctorRepository.getDoctorById(request.getAppointmentDoctorId());
-        if (patient == null || doctor == null) {
-            return -1;
+        if (patient == null) {
+            return new BaseResponse("106", "Patient not found");
+        }
+        if(doctor == null){
+            return new BaseResponse("106", "Doctor not found");
+        }
+        if(appointmentToBeValidated == null){
+            return new BaseResponse("106", "Appointment not found");
         }
         var appointment = gson.fromJson(gson.toJson(request), Appointment.class);
-        return appointmentRepository.updateAppointment(appointment);
+        appointmentRepository.updateAppointment(appointment);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int updateAppointmentDate(AppointmentDateUpdateRequest request){
-        var appointment = appointmentRepository.getAppointmentById(request.getAppointmentId());
-        if(appointment == null){
-            return -1;
+    public BaseResponse updateAppointmentDate(AppointmentDateUpdateRequest request){
+        Gson gson = new Gson();
+        var appointmentResponse = appointmentRepository.getAppointmentById(request.getAppointmentId());
+        if(appointmentResponse == null){
+            return new BaseResponse("106", "Appointment not found");
         }
-        appointment.setAppointmentDate(request.getAppointmentDate());
-        return appointmentRepository.updateAppointment(appointment);
+        appointmentResponse.setAppointmentDate(request.getAppointmentDate());
+        var appointment = gson.fromJson(gson.toJson(appointmentResponse), Appointment.class);
+        appointmentRepository.updateAppointment(appointment);
+        return ResponseConstants.SUCCESS;
     }
 
-    public int deleteAppointmentById(int appointmentId) {
-        return appointmentRepository.deleteAppointmentById(appointmentId);
+    public BaseResponse deleteAppointmentById(int appointmentId) {
+        appointmentRepository.deleteAppointmentById(appointmentId);
+        return ResponseConstants.SUCCESS;
     }
 
-    public List<Appointment> getAppointmentsByPatientId(int patientId) {
-        return appointmentRepository.getAppointmentsByPatientId(patientId);
+    public AppointmentListResponse getAppointmentsByPatientId(int patientId) {
+        var appointments =  appointmentRepository.getAppointmentsByPatientId(patientId);
+
+        return AppointmentListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .appointments(appointments)
+                .build();
     }
 
-    public List<Appointment> getAppointmentsByDoctorId(int doctorId) {
-        return appointmentRepository.getAppointmentsByDoctorId(doctorId);
+    public AppointmentListResponse getAppointmentsByDoctorId(int doctorId) {
+        var appointments =  appointmentRepository.getAppointmentsByDoctorId(doctorId);
+
+        return AppointmentListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .appointments(appointments)
+                .build();
     }
 
-    public List<Appointment> getAppointmentsByHospitalId(int hospitalId) {
-        return appointmentRepository.getAppointmentsByHospitalId(hospitalId);
+    public AppointmentListResponse getAppointmentsByHospitalId(int hospitalId) {
+        var appointments =  appointmentRepository.getAppointmentsByHospitalId(hospitalId);
+
+        return AppointmentListResponse.builder()
+                .responseCode("00")
+                .responseMessage("Successful")
+                .appointments(appointments)
+                .build();
     }
 }

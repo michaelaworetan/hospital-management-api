@@ -14,6 +14,11 @@ public class AppointmentResponse {
     private String appointmentStatus;
     private String appointmentCreatedAt;
     private String appointmentUpdatedAt;
-    private String appointmentPatientName;
     private String appointmentDoctorName;
+    private String appointmentDoctorSpeciality;
+    private String appointmentDoctorLicenseNumber;
+    private String appointmentPatientName;
+    private String appointmentPatientDateOfBirth;
+    private String appointmentPatientGender;
+    private String appointmentHospitalName;
 }

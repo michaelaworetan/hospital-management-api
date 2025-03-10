@@ -1,81 +1,65 @@
 package org.example.hospitalmanagementapi.controller;
 
-import org.example.hospitalmanagementapi.Service.MedicationService;
-import org.example.hospitalmanagementapi.model.entity.Medication;
-import org.example.hospitalmanagementapi.model.request.MedicationCreateRequest;
-import org.example.hospitalmanagementapi.model.request.MedicationUpdateRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+    import org.example.hospitalmanagementapi.Service.MedicationService;
+    import org.example.hospitalmanagementapi.model.request.MedicationCreateRequest;
+    import org.example.hospitalmanagementapi.model.request.MedicationUpdateRequest;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.CustomMedicationListResponse;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.MedicationListResponse;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.MedicationSingleResponse;
+    import org.example.hospitalmanagementapi.model.response.MedicationResponse;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+    @RestController
+    @RequestMapping("/medications")
+    public class MedicationController {
 
-@RestController
-@RequestMapping("/medications")
-public class MedicationController {
+        private final MedicationService medicationService;
 
-    private final MedicationService medicationService;
-
-    public MedicationController(MedicationService medicationService) {
-        this.medicationService = medicationService;
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<List<Medication>> getAllMedications() {
-        List<Medication> medications = medicationService.getAllMedications();
-        return new ResponseEntity<>(medications, HttpStatus.OK);
-    }
-
-    @GetMapping("/{medicationId}")
-    public ResponseEntity<Medication> getMedicationById(@PathVariable("medicationId") int id) {
-        Medication medication = medicationService.getMedicationById(id);
-        if (medication == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        @Autowired
+        public MedicationController(MedicationService medicationService) {
+            this.medicationService = medicationService;
         }
-        return new ResponseEntity<>(medication, HttpStatus.OK);
-    }
 
-    @PostMapping("/create-medication")
-    public ResponseEntity<String> createMedication(@RequestBody MedicationCreateRequest request) {
-        int result = medicationService.createMedication(request);
-        if (result > 0) {
-            return new ResponseEntity<>("Medication created successfully", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Failed to create medication", HttpStatus.BAD_REQUEST);
+        @GetMapping("/")
+        public MedicationListResponse getAllMedications() {
+            return medicationService.getAllMedications();
         }
-    }
 
-    @PutMapping("/update/{medicationId}")
-    public ResponseEntity<String> updateMedication(@PathVariable("medicationId") int id,
-                                                   @RequestBody MedicationUpdateRequest request) {
-        int result = medicationService.updateMedication(id, request);
-        if (result > 0) {
-            return new ResponseEntity<>("Medication updated successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to update medication", HttpStatus.BAD_REQUEST);
+        @GetMapping("/{medicationId}")
+        public MedicationSingleResponse getMedicationById(@PathVariable("medicationId") int id) {
+            return medicationService.getMedicationById(id);
         }
-    }
 
-    @DeleteMapping("/delete/{medicationId}")
-    public ResponseEntity<String> deleteMedication(@PathVariable("medicationId") int id) {
-        int result = medicationService.deleteMedicationById(id);
-        if (result > 0) {
-            return new ResponseEntity<>("Medication deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to delete medication", HttpStatus.BAD_REQUEST);
+        @PostMapping("/create-medication")
+        public BaseResponse createMedication(@RequestBody MedicationCreateRequest request) {
+            return medicationService.createMedication(request);
+        }
+
+        @PutMapping("/update/{medicationId}")
+        public BaseResponse updateMedication(@PathVariable("medicationId") int id,
+                                             @RequestBody MedicationUpdateRequest request) {
+            return medicationService.updateMedication(id, request);
+        }
+
+        @DeleteMapping("/delete/{medicationId}")
+        public BaseResponse deleteMedication(@PathVariable("medicationId") int id) {
+            return medicationService.deleteMedicationById(id);
+        }
+
+        @GetMapping("/hospital/{hospitalId}")
+        public MedicationListResponse getMedicationsByHospitalId(@PathVariable("hospitalId") int hospitalId) {
+            return medicationService.getMedicationsByHospitalId(hospitalId);
+        }
+
+        @GetMapping("/hospital/{hospitalId}/expired")
+        public MedicationListResponse getExpiredMedicationsByHospitalId(@PathVariable("hospitalId") int hospitalId) {
+            return medicationService.getExpiredMedicationsByHospitalId(hospitalId);
+        }
+
+        @GetMapping("/hospital/{hospitalId}/report")
+        public CustomMedicationListResponse generateMedicationSalesReport(@PathVariable("hospitalId") int hospitalId) {
+            return medicationService.generateMedicationSalesReport(hospitalId);
         }
     }
-
-    @GetMapping("/hospital/{hospitalId}")
-    public ResponseEntity<List<Medication>> getMedicationsByHospitalId(@PathVariable("hospitalId") int hospitalId) {
-        List<Medication> medications = medicationService.getMedicationsByHospitalId(hospitalId);
-        return new ResponseEntity<>(medications, HttpStatus.OK);
-    }
-
-    @GetMapping("/hospital/{hospitalId}/expired")
-    public ResponseEntity<List<Medication>> getExpiredMedicationsByHospitalId(@PathVariable("hospitalId") int hospitalId) {
-        List<Medication> medications = medicationService.getExpiredMedicationsByHospitalId(hospitalId);
-        return new ResponseEntity<>(medications, HttpStatus.OK);
-    }
-
-}

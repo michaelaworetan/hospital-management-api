@@ -16,7 +16,7 @@ public class MedicationRowMapper implements RowMapper<Medication> {
                 .medicationName(rs.getString("medicationName"))
                 .medicationDescription(rs.getString("medicationDescription"))
                 .medicationManufacturer(rs.getString("medicationManufacturer"))
-                .medicationPrice(rs.getInt("medicationPrice"))
+                .medicationPrice(rs.getDouble("medicationPrice"))
                 .medicationStockQuantity(rs.getInt("medicationStockQuantity"))
                 .medicationExpiryDate(rs.getString("medicationExpiryDate"))
                 .medicationStatus(rs.getString("medicationStatus"))

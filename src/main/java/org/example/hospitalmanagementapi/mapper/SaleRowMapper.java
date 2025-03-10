@@ -13,7 +13,7 @@ public class SaleRowMapper implements RowMapper<Sale> {
                 .salesId(rs.getInt("salesId"))
                 .salesPrescriptionId(rs.getInt("salesPrescriptionId"))
                 .salesQuantity(rs.getInt("salesQuantity"))
-                .salesTotalPrice(rs.getBigDecimal("salesTotalPrice"))
+                .salesTotalPrice(rs.getDouble("salesTotalPrice"))
                 .salesStatus(rs.getString("salesStatus"))
                 .salesCreatedAt(rs.getString("salesCreatedAt"))
                 .salesUpdatedAt(rs.getString("salesUpdatedAt"))

@@ -12,6 +12,8 @@ public interface PrescriptionItemRepository {
 
     PrescriptionItem getPrescriptionItemById(int prescriptionItemId);
 
+    List<PrescriptionItem> getPrescriptionItemsByPrescriptionId(int prescriptionId);
+
     int updatePrescriptionItem(PrescriptionItem prescriptionItem);
 
     int deletePrescriptionItemById(int prescriptionItemId);

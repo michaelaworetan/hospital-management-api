@@ -1,15 +1,13 @@
 package org.example.hospitalmanagementapi.controller;
 
 import org.example.hospitalmanagementapi.Service.StaffService;
-import org.example.hospitalmanagementapi.model.entity.Staff;
 import org.example.hospitalmanagementapi.model.request.StaffCreateRequest;
 import org.example.hospitalmanagementapi.model.request.StaffUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.StaffListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.StaffSingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/staff")
@@ -22,56 +20,37 @@ public class StaffController {
     }
 
     @PostMapping("/create-staff")
-    public ResponseEntity<String> createStaff(@RequestBody StaffCreateRequest request) {
-        var resp = staffService.createStaff(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff creation failed");
-        return ResponseEntity.ok("Staff created successfully");
+    public BaseResponse createStaff(@RequestBody StaffCreateRequest request) {
+        return staffService.createStaff(request);
     }
 
     @GetMapping("/get-all-staff")
-    public ResponseEntity<List<Staff>> getAllStaff() {
-        return ResponseEntity.ok(staffService.getAllStaff());
+    public StaffListResponse getAllStaff() {
+        return staffService.getAllStaff();
     }
 
     @GetMapping("/get-by-id/{staffId}")
-    public ResponseEntity<?> getStaffById(@PathVariable int staffId) {
-        var resp = staffService.getStaffById(staffId);
-        if (resp == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found");
-        return ResponseEntity.ok(resp);
+    public StaffSingleResponse getStaffById(@PathVariable int staffId) {
+        return staffService.getStaffById(staffId);
     }
 
     @GetMapping("/get-all-staff-by-hospital-id/{hospitalId}")
-    public ResponseEntity<?> getAllStaffByHospitalId(@PathVariable int hospitalId) {
-        var resp = staffService.getAllStaffByHospitalId(hospitalId);
-        if (resp == null || resp.isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No staff found for this hospital");
-        return ResponseEntity.ok(resp);
+    public StaffListResponse getAllStaffByHospitalId(@PathVariable int hospitalId) {
+        return staffService.getAllStaffByHospitalId(hospitalId);
     }
 
     @PutMapping("/update-staff")
-    public ResponseEntity<String> updateStaff(@RequestBody StaffUpdateRequest request) {
-        var resp = staffService.updateStaff(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff update failed");
-        return ResponseEntity.ok("Staff updated successfully");
+    public BaseResponse updateStaff(@RequestBody StaffUpdateRequest request) {
+        return staffService.updateStaff(request);
     }
 
     @DeleteMapping("/delete-by-id/{staffId}")
-    public ResponseEntity<String> deleteStaffById(@PathVariable int staffId) {
-        var resp = staffService.deleteStaffById(staffId);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff deletion failed");
-        return ResponseEntity.ok("Staff deleted successfully");
+    public BaseResponse deleteStaffById(@PathVariable int staffId) {
+        return staffService.deleteStaffById(staffId);
     }
 
-
     @GetMapping("/get-staff-by-salary-range")
-    public ResponseEntity<?> getStaffBySalaryRange(@RequestParam double minSalary, @RequestParam double maxSalary) {
-        var resp = staffService.getStaffBySalaryRange(minSalary, maxSalary);
-        if (resp == null || resp.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No staff found within the given salary range");
-        return ResponseEntity.ok(resp);
+    public StaffListResponse getStaffBySalaryRange(@RequestParam double minSalary, @RequestParam double maxSalary) {
+        return staffService.getStaffBySalaryRange(minSalary, maxSalary);
     }
 }

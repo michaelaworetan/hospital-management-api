@@ -1,13 +1,14 @@
 package org.example.hospitalmanagementapi.repository.Interface;
 
 import org.example.hospitalmanagementapi.model.entity.Appointment;
+import org.example.hospitalmanagementapi.model.response.AppointmentResponse;
 
 import java.util.List;
 
 public interface AppointmentRepository {
-    List<Appointment> getAllAppointments();
+    List<AppointmentResponse> getAllAppointments();
 
-    Appointment getAppointmentById(int appointmentId);
+    AppointmentResponse getAppointmentById(int appointmentId);
 
     int createAppointment(Appointment appointment);
 
@@ -17,9 +18,9 @@ public interface AppointmentRepository {
 
     int deleteAppointmentById(int appointmentId);
 
-    List<Appointment> getAppointmentsByPatientId(int patientId);
+    List<AppointmentResponse> getAppointmentsByPatientId(int patientId);
 
-    List<Appointment> getAppointmentsByDoctorId(int doctorId);
+    List<AppointmentResponse> getAppointmentsByDoctorId(int doctorId);
 
-    List<Appointment> getAppointmentsByHospitalId(int hospitalId);
+    List<AppointmentResponse> getAppointmentsByHospitalId(int hospitalId);
 }

@@ -20,6 +20,12 @@ public class PrescriptionItemQuery {
               AND prescriptionItemStatus = 'ACTIVE'
             """;
 
+    public static final String GET_PRESCRIPTION_ITEMS_BY_PRESCRIPTION_ID = """
+            SELECT * FROM PrescriptionItem
+            WHERE prescriptionItemPrescriptionId = :prescriptionId
+              AND prescriptionItemStatus = 'ACTIVE'
+            """;
+
     public static final String UPDATE_PRESCRIPTION_ITEM = """
             UPDATE PrescriptionItem
             SET prescriptionItemMedicationId    = :prescriptionItemMedicationId,
@@ -40,10 +46,10 @@ public class PrescriptionItemQuery {
 
     public static final String GET_PRESCRIPTION_ITEMS_BY_APPOINTMENT_ID = """
             SELECT
-                 pi.prescriptionItemId,
-                 pi.prescriptionItemQuantity,
-                 pi.prescriptionItemDosageInstruction,
-                 m.medicationName
+                 pi.*,
+                 m.medicationName,
+                 m.medicationStockQuantity,
+                 m.medicationPrice
              FROM PrescriptionItem pi
              JOIN Prescription p ON pi.prescriptionItemPrescriptionId = p.prescriptionId
              JOIN Appointment a ON p.prescriptionAppointmentId = a.appointmentId

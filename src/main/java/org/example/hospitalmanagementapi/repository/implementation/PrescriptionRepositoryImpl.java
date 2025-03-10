@@ -6,6 +6,8 @@ import org.example.hospitalmanagementapi.mapper.PrescriptionRowMapper;
 import org.example.hospitalmanagementapi.repository.query.PrescriptionQuery;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -29,7 +31,9 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository {
         params.addValue("prescriptionAppointmentId", prescription.getPrescriptionAppointmentId());
         params.addValue("prescriptionNote", prescription.getPrescriptionNote());
         params.addValue("prescriptionPrescribedDate", prescription.getPrescriptionPrescribedDate());
-        return jdbcTemplate.update(PrescriptionQuery.INSERT_PRESCRIPTION, params);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(PrescriptionQuery.INSERT_PRESCRIPTION, params, keyHolder, new String[]{"prescriptionId"});
+        return keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
     }
 
     @Override

@@ -48,6 +48,16 @@ public class PrescriptionItemRepositoryImpl implements PrescriptionItemRepositor
     }
 
     @Override
+    public List<PrescriptionItem> getPrescriptionItemsByPrescriptionId(int prescriptionId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("prescriptionId", prescriptionId);
+        return jdbcTemplate.query(
+                PrescriptionItemQuery.GET_PRESCRIPTION_ITEMS_BY_PRESCRIPTION_ID,
+                params,
+                new PrescriptionItemRowMapper());
+    }
+
+    @Override
     public int updatePrescriptionItem(PrescriptionItem prescriptionItem) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("prescriptionItemId", prescriptionItem.getPrescriptionItemId());

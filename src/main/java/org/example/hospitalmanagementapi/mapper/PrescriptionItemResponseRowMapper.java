@@ -12,9 +12,16 @@ public class PrescriptionItemResponseRowMapper implements RowMapper<Prescription
     public PrescriptionItemResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
         return PrescriptionItemResponse.builder()
                 .prescriptionItemId(rs.getInt("prescriptionItemId"))
-                .medicationName(rs.getString("medicationName"))
+                .prescriptionItemMedicationId(rs.getInt("prescriptionItemMedicationId"))
+                .prescriptionItemPrescriptionId(rs.getInt("prescriptionItemPrescriptionId"))
                 .prescriptionItemQuantity(rs.getInt("prescriptionItemQuantity"))
                 .prescriptionItemDosageInstruction(rs.getString("prescriptionItemDosageInstruction"))
+                .prescriptionItemStatus(rs.getString("prescriptionItemStatus"))
+                .prescriptionItemCreatedAt(rs.getString("prescriptionItemCreatedAt"))
+                .prescriptionItemUpdatedAt(rs.getString("prescriptionItemUpdatedAt"))
+                .medicationName(rs.getString("medicationName"))
+                .medicationStockQuantity(rs.getInt("medicationStockQuantity"))
+                .medicationPrice(rs.getDouble("medicationPrice"))
                 .build();
     }
 }

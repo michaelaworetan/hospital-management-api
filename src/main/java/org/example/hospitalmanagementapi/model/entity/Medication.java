@@ -11,7 +11,7 @@ public class Medication {
     private String medicationName;
     private String medicationDescription;
     private String medicationManufacturer;
-    private int medicationPrice;
+    private Double medicationPrice;
     private int medicationStockQuantity;
     private String medicationExpiryDate;
     private String medicationStatus;

@@ -4,6 +4,9 @@ import org.example.hospitalmanagementapi.Service.AdminService;
 import org.example.hospitalmanagementapi.model.entity.Admin;
 import org.example.hospitalmanagementapi.model.request.AdminCreateRequest;
 import org.example.hospitalmanagementapi.model.request.AdminUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.AdminListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.AdminSingleResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,40 +25,28 @@ public class AdminController {
     }
 
     @PostMapping("/create-admin")
-    public ResponseEntity<String> createAdmin(@RequestBody AdminCreateRequest request) {
-        var resp = adminService.createAdmin(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin failed to create");
-        return ResponseEntity.ok("Admin created successfully");
+    public BaseResponse createAdmin(@RequestBody AdminCreateRequest request) {
+        return adminService.createAdmin(request);
     }
 
     @GetMapping("/get-all-admins")
-    public ResponseEntity<List<Admin>> getAllAdmins() {
-        return ResponseEntity.ok(adminService.getAllAdmins());
+    public AdminListResponse getAllAdmins() {
+        return adminService.getAllAdmins();
     }
 
     @GetMapping("/get-by-id/{adminId}")
-    public ResponseEntity<?> getAdminById(@PathVariable int adminId) {
-        var resp = adminService.getAdminById(adminId);
-        if(resp == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin not found");
-        return ResponseEntity.ok(resp);
+    public AdminSingleResponse getAdminById(@PathVariable int adminId) {
+        return adminService.getAdminById(adminId);
     }
 
     @PutMapping("/update-admin")
-    public ResponseEntity<String> updateAdmin(@RequestBody AdminUpdateRequest request) {
-        var resp = adminService.updateAdmin(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin failed to update");
-        return ResponseEntity.ok("Admin updated successfully");
+    public BaseResponse updateAdmin(@RequestBody AdminUpdateRequest request) {
+        return adminService.updateAdmin(request);
     }
 
     @DeleteMapping("/delete-by-id/{adminId}")
-    public ResponseEntity<String> deleteAdminById(@PathVariable int adminId) {
-        var resp = adminService.deleteAdminById(adminId);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin failed to delete");
-        return ResponseEntity.ok("Admin deleted successfully");
+    public BaseResponse deleteAdminById(@PathVariable int adminId) {
+        return adminService.deleteAdminById(adminId);
     }
 
 }

@@ -1,7 +1,9 @@
 package org.example.hospitalmanagementapi.repository.implementation;
 
+import org.example.hospitalmanagementapi.mapper.AppointmentResponseRowMapper;
 import org.example.hospitalmanagementapi.mapper.AppointmentRowMapper;
 import org.example.hospitalmanagementapi.model.entity.Appointment;
+import org.example.hospitalmanagementapi.model.response.AppointmentResponse;
 import org.example.hospitalmanagementapi.repository.Interface.AppointmentRepository;
 import org.example.hospitalmanagementapi.repository.query.AppointmentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +24,14 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
-    public List<Appointment> getAllAppointments() {
-        return jdbcTemplate.query(AppointmentQuery.GET_ALL_APPOINTMENTS, new AppointmentRowMapper());
+    public List<AppointmentResponse> getAllAppointments() {
+        return jdbcTemplate.query(AppointmentQuery.GET_ALL_APPOINTMENTS, new AppointmentResponseRowMapper());
     }
 
     @Override
-    public Appointment getAppointmentById(int appointmentId) {
+    public AppointmentResponse getAppointmentById(int appointmentId) {
         MapSqlParameterSource params = new MapSqlParameterSource("appointmentId", appointmentId);
-        return jdbcTemplate.queryForObject(AppointmentQuery.GET_APPOINTMENT_BY_ID, params, new AppointmentRowMapper());
+        return jdbcTemplate.queryForObject(AppointmentQuery.GET_APPOINTMENT_BY_ID, params, new AppointmentResponseRowMapper());
     }
 
     @Override
@@ -69,20 +71,20 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatientId(int patientId) {
+    public List<AppointmentResponse> getAppointmentsByPatientId(int patientId) {
         MapSqlParameterSource params = new MapSqlParameterSource("appointmentPatientId", patientId);
-        return jdbcTemplate.query(AppointmentQuery.GET_APPOINTMENTS_BY_PATIENT_ID, params, new AppointmentRowMapper());
+        return jdbcTemplate.query(AppointmentQuery.GET_APPOINTMENTS_BY_PATIENT_ID, params, new AppointmentResponseRowMapper());
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctorId(int doctorId) {
+    public List<AppointmentResponse> getAppointmentsByDoctorId(int doctorId) {
         MapSqlParameterSource params = new MapSqlParameterSource("appointmentDoctorId", doctorId);
-        return jdbcTemplate.query(AppointmentQuery.GET_APPOINTMENTS_BY_DOCTOR_ID, params, new AppointmentRowMapper());
+        return jdbcTemplate.query(AppointmentQuery.GET_APPOINTMENTS_BY_DOCTOR_ID, params, new AppointmentResponseRowMapper());
     }
 
     @Override
-    public List<Appointment> getAppointmentsByHospitalId(int hospitalId) {
+    public List<AppointmentResponse> getAppointmentsByHospitalId(int hospitalId) {
         MapSqlParameterSource params = new MapSqlParameterSource("appointmentHospitalId", hospitalId);
-        return jdbcTemplate.query(AppointmentQuery.GET_APPOINTMENTS_BY_HOSPITAL_ID, params, new AppointmentRowMapper());
+        return jdbcTemplate.query(AppointmentQuery.GET_APPOINTMENTS_BY_HOSPITAL_ID, params, new AppointmentResponseRowMapper());
     }
 }

@@ -4,10 +4,12 @@ import org.example.hospitalmanagementapi.Service.DoctorService;
 import org.example.hospitalmanagementapi.model.entity.Doctor;
 import org.example.hospitalmanagementapi.model.request.DoctorCreateRequest;
 import org.example.hospitalmanagementapi.model.request.DoctorUpdateRequest;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.DoctorDetailsListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.DoctorListResponse;
+import org.example.hospitalmanagementapi.model.response.serviceresponse.DoctorSingleResponse;
 import org.example.hospitalmanagementapi.model.response.DoctorDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,49 +25,32 @@ public class DoctorController {
     }
 
     @PostMapping("/create-doctor")
-    public ResponseEntity<String> createDoctor(@RequestBody DoctorCreateRequest request) {
-        var resp = doctorService.createDoctor(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor creation failed: Invalid Staff ID");
-        return ResponseEntity.ok("Doctor created successfully");
+    public BaseResponse createDoctor(@RequestBody DoctorCreateRequest request) {
+        return doctorService.createDoctor(request);
     }
 
     @GetMapping("/get-all-doctors")
-    public ResponseEntity<List<Doctor>> getAllDoctors() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
+    public DoctorListResponse getAllDoctors() {
+        return doctorService.getAllDoctors();
     }
 
     @GetMapping("/get-by-id/{doctorId}")
-    public ResponseEntity<?> getDoctorById(@PathVariable int doctorId) {
-        var resp = doctorService.getDoctorById(doctorId);
-        if (resp == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found");
-        return ResponseEntity.ok(resp);
+    public DoctorSingleResponse getDoctorById(@PathVariable int doctorId) {
+        return doctorService.getDoctorById(doctorId);
     }
 
     @PutMapping("/update-doctor")
-    public ResponseEntity<String> updateDoctor(@RequestBody DoctorUpdateRequest request) {
-        var resp = doctorService.updateDoctor(request);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor update failed: Invalid Staff ID");
-        return ResponseEntity.ok("Doctor updated successfully");
+    public BaseResponse updateDoctor(@RequestBody DoctorUpdateRequest request) {
+        return doctorService.updateDoctor(request);
     }
 
     @DeleteMapping("/delete-by-staff-id/{doctorStaffId}")
-    public ResponseEntity<String> deleteDoctorByStaffId(@PathVariable int doctorStaffId) {
-        var resp = doctorService.deleteDoctorByStaffId(doctorStaffId);
-        if (resp < 1)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor deletion failed");
-        return ResponseEntity.ok("Doctor deleted successfully");
+    public BaseResponse deleteDoctorByStaffId(@PathVariable int doctorStaffId) {
+        return doctorService.deleteDoctorByStaffId(doctorStaffId);
     }
 
-
     @GetMapping("/get-doctor-details-by-hospital/{hospitalId}")
-    public ResponseEntity<?> getDoctorDetailsByHospitalId(@PathVariable int hospitalId) {
-        List<DoctorDetailsResponse> resp = doctorService.getDoctorDetailsByHospitalId(hospitalId);
-        if (resp.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No valid doctors found for this hospital");
-        }
-        return ResponseEntity.ok(resp);
+    public DoctorDetailsListResponse getDoctorDetailsByHospitalId(@PathVariable int hospitalId) {
+        return doctorService.getDoctorDetailsByHospitalId(hospitalId);
     }
 }

@@ -1,74 +1,53 @@
 package org.example.hospitalmanagementapi.controller;
 
-import org.example.hospitalmanagementapi.Service.PrescriptionItemService;
-import org.example.hospitalmanagementapi.model.entity.PrescriptionItem;
-import org.example.hospitalmanagementapi.model.request.PrescriptionItemCreateRequest;
-import org.example.hospitalmanagementapi.model.request.PrescriptionItemUpdateRequest;
-import org.example.hospitalmanagementapi.model.response.PrescriptionItemResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+    import org.example.hospitalmanagementapi.Service.PrescriptionItemService;
+    import org.example.hospitalmanagementapi.model.request.PrescriptionItemCreateRequest;
+    import org.example.hospitalmanagementapi.model.request.PrescriptionItemUpdateRequest;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.BaseResponse;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.CustomPrescriptionItemListResponse;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.PrescriptionItemListResponse;
+    import org.example.hospitalmanagementapi.model.response.serviceresponse.PrescriptionItemSingleResponse;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+    @RestController
+    @RequestMapping("/prescription-items")
+    public class PrescriptionItemController {
 
-@RestController
-@RequestMapping("/prescription-items")
-public class PrescriptionItemController {
+        private final PrescriptionItemService prescriptionItemService;
 
-    private final PrescriptionItemService prescriptionItemService;
-
-    public PrescriptionItemController(PrescriptionItemService prescriptionItemService) {
-        this.prescriptionItemService = prescriptionItemService;
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<List<PrescriptionItem>> getAllPrescriptionItems() {
-        List<PrescriptionItem> items = prescriptionItemService.getAllPrescriptionItems();
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }
-
-    @GetMapping("/{prescriptionItemId}")
-    public ResponseEntity<PrescriptionItem> getPrescriptionItemById(@PathVariable("prescriptionItemId") int id) {
-        PrescriptionItem item = prescriptionItemService.getPrescriptionItemById(id);
-        if (item == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        @Autowired
+        public PrescriptionItemController(PrescriptionItemService prescriptionItemService) {
+            this.prescriptionItemService = prescriptionItemService;
         }
-        return new ResponseEntity<>(item, HttpStatus.OK);
-    }
 
-    @PostMapping("/create")
-    public ResponseEntity<String> createPrescriptionItem(@RequestBody PrescriptionItemCreateRequest request) {
-        int result = prescriptionItemService.createPrescriptionItem(request);
-        if (result > 0) {
-            return new ResponseEntity<>("Prescription item created successfully", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Failed to create prescription item", HttpStatus.BAD_REQUEST);
+        @GetMapping("/")
+        public PrescriptionItemListResponse getAllPrescriptionItems() {
+            return prescriptionItemService.getAllPrescriptionItems();
         }
-    }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updatePrescriptionItem(@RequestBody PrescriptionItemUpdateRequest request) {
-        int result = prescriptionItemService.updatePrescriptionItem(request);
-        if (result > 0) {
-            return new ResponseEntity<>("Prescription item updated successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to update prescription item", HttpStatus.BAD_REQUEST);
+        @GetMapping("/{prescriptionItemId}")
+        public PrescriptionItemSingleResponse getPrescriptionItemById(@PathVariable("prescriptionItemId") int id) {
+            return prescriptionItemService.getPrescriptionItemById(id);
+        }
+
+        @PostMapping("/create")
+        public BaseResponse createPrescriptionItem(@RequestBody PrescriptionItemCreateRequest request) {
+            return prescriptionItemService.createPrescriptionItem(request);
+        }
+
+        @PutMapping("/update")
+        public BaseResponse updatePrescriptionItem(@RequestBody PrescriptionItemUpdateRequest request) {
+            return prescriptionItemService.updatePrescriptionItem(request);
+        }
+
+        @DeleteMapping("/delete/{prescriptionItemId}")
+        public BaseResponse deletePrescriptionItem(@PathVariable("prescriptionItemId") int id) {
+            return prescriptionItemService.deletePrescriptionItemById(id);
+        }
+
+        @GetMapping("/appointment/{appointmentId}")
+        public CustomPrescriptionItemListResponse getPrescriptionItemsByAppointmentId(@PathVariable("appointmentId") int appointmentId) {
+            return prescriptionItemService.getPrescriptionItemsByAppointmentId(appointmentId);
         }
     }
-
-    @DeleteMapping("/delete/{prescriptionItemId}")
-    public ResponseEntity<String> deletePrescriptionItem(@PathVariable("prescriptionItemId") int id) {
-        int result = prescriptionItemService.deletePrescriptionItemById(id);
-        if (result > 0) {
-            return new ResponseEntity<>("Prescription item deleted successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to delete prescription item", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/appointment/{appointmentId}")
-    public ResponseEntity<List<PrescriptionItemResponse>> getPrescriptionItemsByAppointmentId(@PathVariable("appointmentId") int appointmentId) {
-        List<PrescriptionItemResponse> responses = prescriptionItemService.getPrescriptionItemsByAppointmentId(appointmentId);
-        return new ResponseEntity<>(responses, HttpStatus.OK);
-    }
-}

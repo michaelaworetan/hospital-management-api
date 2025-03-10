@@ -7,6 +7,8 @@ import org.example.hospitalmanagementapi.repository.query.StaffQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,7 +48,9 @@ public class StaffRepositoryImpl implements StaffRepository {
                 .addValue("staffPosition", staff.getStaffPosition())
                 .addValue("staffDepartment", staff.getStaffDepartment())
                 .addValue("staffSalary", staff.getStaffSalary());
-        return jdbcTemplate.update(StaffQuery.INSERT_STAFF, params);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(StaffQuery.INSERT_STAFF, params, keyHolder, new String[]{"staff_id"});
+        return keyHolder.getKey() != null ? keyHolder.getKey().intValue() : -1;
     }
 
     @Override
